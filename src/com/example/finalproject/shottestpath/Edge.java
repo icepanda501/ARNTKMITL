@@ -6,12 +6,14 @@ public class Edge {
 	  private final Vertex source;
 	  private final Vertex destination;
 	  private final int weight; 
+	  private final int angle;
 	  
-	  public Edge(String id, Vertex source, Vertex destination, int weight) {
+	  public Edge(String id, Vertex source, Vertex destination, int weight,int angle) {
 	    this.id = id;
 	    this.source = source;
 	    this.destination = destination;
 	    this.weight = weight;
+	    this.angle = angle;
 	  }
 	  
 	  public String getId() {
@@ -26,6 +28,9 @@ public class Edge {
 	  }
 	  public int getWeight() {
 	    return weight;
+	  }
+	  public int getAngle(){
+		  return angle;
 	  }
 	  
 	  @Override

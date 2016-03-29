@@ -15,6 +15,7 @@ public class PathView extends View{
 	Paint paint = new Paint();
 	int xScale = 25;
 	int yScale = 25;
+	int visible = -1;
 	LinkedList<Vertex> path;
 	
 	public PathView(Context context) {
@@ -42,6 +43,18 @@ public class PathView extends View{
 		
 	}
 	
+	public void show(){
+		visible = 1;
+		this.setVisibility(visible);
+	}
 	
+	public void hide(){
+		visible = -1;
+		this.setVisibility(visible);
+	}
+	
+	public boolean isVisible(){
+		return visible == 1;
+	}
 
 }

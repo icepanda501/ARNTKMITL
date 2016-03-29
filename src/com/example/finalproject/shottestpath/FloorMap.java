@@ -1,68 +1,81 @@
 package com.example.finalproject.shottestpath;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.finalproject.view.FloorMapView;
+import com.example.finalproject.view.MapView;
 import com.example.finalproject.view.PathView;
 import com.example.finalproject.view.PositioningView;
 
 import android.util.Log;
+import android.view.View;
 
 public class FloorMap {
 	private List<Vertex> nodes;
 	private List<Edge> edges;
 	private ArrayList<ArrayList<Edge>> floorEdges = new ArrayList<ArrayList<Edge>>();
 	private ArrayList<ArrayList<Vertex>> floorNodes = new ArrayList<ArrayList<Vertex>>();
-	private int startNode = 0;
+	private Vertex currentNode;
 	private int endNode = -1;
 	private PathView pathview;
 	private PositioningView position;
-	public FloorMap(PathView pathview,PositioningView position){
+	private FloorMapView mapview;
+	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,JSONObject json_obj) throws JSONException{
 		
 		this.pathview = pathview;
 		this.position = position;
+		this.mapview = mapview;
 		for(int i=1;i<=5;i++){
 			floorNodes.add(new ArrayList<Vertex>());
 			floorEdges.add(new ArrayList<Edge>());
 		}
 		
-	    addVertex(1,0, 3, 6,true);
-	    addVertex(1,1, 9, 6,true);
-	    addVertex(1,2, 11, 6,false);
-	    addVertex(1,3, 11, 7,true);
-	    addVertex(1,4, 11, 9,false);
-	    addVertex(1,5, 13, 9,true);
-	    addVertex(1,6, 17, 9,false);
-	    addVertex(1,7, 11, 13,true);
-	    addVertex(1,8, 17, 13,true);
-	    addVertex(1,9, 11, 18,true);
-	    addVertex(1,10, 17, 18,true);
-	    addLane("Edge_0",1, 0, 1, 1);
-	    addLane("Edge_1",1, 1, 2, 1);
-	    addLane("Edge_2",1, 2, 3, 1);
-	    addLane("Edge_3",1, 3, 4, 1);
-	    addLane("Edge_4",1, 4, 5, 1);
-	    addLane("Edge_5",1, 5, 6, 1);
-	    addLane("Edge_6",1, 6, 8, 1);
-	    addLane("Edge_7",1, 4, 7, 1);
-	    addLane("Edge_8",1, 7, 8, 1);
-	    addLane("Edge_9",1, 7, 9, 1);
-	    addLane("Edge_10",1, 8, 10, 1);
-	    addLane("Edge_11",1, 9, 10, 1);		
-	    //two way lane
-	    addLane("Edge_0",1, 1, 0, 1);
-	    addLane("Edge_1",1, 2, 1, 1);
-	    addLane("Edge_2",1, 3, 2, 1);
-	    addLane("Edge_3",1, 4, 3, 1);
-	    addLane("Edge_4",1, 5, 4, 1);
-	    addLane("Edge_5",1, 6, 5, 1);
-	    addLane("Edge_6",1, 8, 6, 1);
-	    addLane("Edge_7",1, 7, 4, 1);
-	    addLane("Edge_8",1, 8, 7, 1);
-	    addLane("Edge_9",1, 9, 7, 1);
-	    addLane("Edge_10",1, 10, 8, 1);
-	    addLane("Edge_11",1, 10, 9, 1);		
+		
+		int floor,number,x,y;
+		boolean isMarker;
+		JSONArray json_array = json_obj.getJSONArray("data");
+		for(int i = 0;i<json_array.length();i++){
+			JSONObject j_inside = json_array.getJSONObject(i);
+			floor = j_inside.getInt("floor");
+			number = j_inside.getInt("number");
+			x = j_inside.getInt("x");
+			y = j_inside.getInt("y");
+			if(j_inside.get("type").equals("marker")){
+				isMarker = true;
+			}else{
+				isMarker = false;
+			}
+			addVertex(floor,number, x, y,isMarker);
+		
+		}
+		
+		
+		for(int i = 0;i<json_array.length();i++){
+			JSONObject j_inside = json_array.getJSONObject(i);
+			int link_number,distance,angle;
+			number = j_inside.getInt("number");
+			floor = j_inside.getInt("floor");
+			JSONArray link = j_inside.getJSONArray("link");
+			for(int j=0;j<link.length();j++){
+				JSONObject link_inside = link.getJSONObject(j);
+				Log.i("Link JSON","Link JSON : "+link_inside.toString()+" "+number);
+				link_number = link_inside.getInt("number");
+				distance = link_inside.getInt("distance");
+				angle = link_inside.getInt("angle");			
+				addLane("EdgeGo"+link_number,floor,number,link_number,distance,angle);
+				addLane("EdgeBack"+link_number,floor,link_number,number,distance,angle);
+				
+			}
+		}
+		
+		
 	    
 	    
 		
@@ -102,8 +115,8 @@ public class FloorMap {
 		  }
 
 		  private void addLane(String laneId,int floorNum, int sourceLocNo, int destLocNo,
-		      int duration) {
-		    Edge lane = new Edge(laneId,floorNodes.get(floorNum).get(sourceLocNo), floorNodes.get(floorNum).get(destLocNo), duration);
+		      int duration , int angle) {
+		    Edge lane = new Edge(laneId,floorNodes.get(floorNum).get(sourceLocNo), floorNodes.get(floorNum).get(destLocNo), duration,angle);
 		    floorEdges.get(floorNum).add(lane);
 		  }
 		  
@@ -118,26 +131,61 @@ public class FloorMap {
 			  return floorNodes.get(floorNum);
 		  }
 		  
-		  public void setStartNode(int startNode){
-			  this.startNode = startNode;
-		  }
+
 		  public void setEndNode(int endNode){
 			  this.endNode = endNode;
+			  if(currentNode != null){
+				  drawPath(currentNode.getFloor(),currentNode.getNumber());
+			  }else if(endNode != -1){
+				  mapview.show();
+				  
+			  }
 		  }
-		  public int getStartNode(){
-			  return startNode;
-		  }
+
 		  public int getEndNode(){
 			  return endNode;
+		  }
+		  
+		  public Vertex getCurrentPosition(){
+			  return currentNode;
+		  }
+		  
+		  public void currentPosition(Vertex node){
+			  currentNode = node;
+			  drawPosition(node.getX(),node.getY());
+		  }
+		  
+		  public void clear(){
+			  currentNode = null;
+			  endNode = -1;
+			  pathview.setPath(new LinkedList<Vertex>());
+			  position.setPosition(-1, -1);
 		  }
 		  
 		  public void drawPosition(int x,int y){
 			  position.setPosition(x, y);
 		  }
 		  
-		  public void drawPath(int floorNum , int start,int des){
-			  pathview.setPath(getShottestPath(floorNum , start, des));
+		  public void drawPath(int floorNum , int start){
+			  LinkedList<Vertex> linePath = getShottestPath(floorNum , start, endNode);
+			  pathview.setPath(linePath);
+			  Log.i("Linklist",linePath.toString());
 		  }
+		  
+		  
+		  public Edge findTheWay(int floor,int start , int end){
+			  
+			  for(int i=0;i<floorEdges.get(floor).size();i++){
+				  if(floorEdges.get(floor).get(i).getSource().getNumber() == start && floorEdges.get(floor).get(i).getDestination().getNumber() == end){
+					  return floorEdges.get(floor).get(i);
+				  }
+			  }
+			  	
+			  return null;
+			  
+		  }
+		  
+
 		  
 
 }

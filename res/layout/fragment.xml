@@ -20,12 +20,20 @@
         android:layout_centerVertical="true"
         android:text="" />
     
-    <Spinner
-	    android:id="@+id/spinner"
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="clear"
+        android:layout_toLeftOf="@+id/autocomplete"
+        android:background="#C2185B" />
+    
+    <AutoCompleteTextView
+		android:id="@+id/autocomplete"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:background="@android:drawable/btn_dropdown"
-	    android:spinnerMode="dropdown"
+	    android:ems="10" 
+	    android:imeOptions="flagNoExtractUi"
 	    android:layout_alignParentRight="true" />
 
 

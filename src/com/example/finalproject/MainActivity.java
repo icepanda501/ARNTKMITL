@@ -9,11 +9,16 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.finalproject.graphics.LightingRenderer;
 import com.example.finalproject.graphics.Model3D;
@@ -119,8 +124,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	ARToolkit artoolkitForFloor1;
 	private int switchmap = -1;
 	private FloorMap floormap;
-	public int startNode = 0;
-	public int endNode = 0;
+	private FloorMapView mapview;
 	public MainActivity() {
 		super(false);
 	}
@@ -134,13 +138,12 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		getSurfaceView().setOnTouchListener(new TouchEventHandler());
 		getSurfaceView().getHolder().addCallback(this);
 		
-		MapView map = new MapView(this);
-		final FloorMapView floor = new FloorMapView(this);
-		floor.setVisibility(switchmap);
+		MapView mapbutton = new MapView(this);
+		mapview = new FloorMapView(this);
+		mapview.hide();
 		
 		
-		Button search = new Button(this);
-		search.setText("Search");
+
 
 		
      
@@ -165,45 +168,49 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         FrameLayout.LayoutParams lineParams = new FrameLayout.LayoutParams(400, 300);
         lineParams.leftMargin = 450;
         lineParams.topMargin = 200;
-        
+     
         input.setBackgroundColor(0xFF00FFFF);
-
-        search.setBackgroundColor(Color.GRAY);
-        floor.setBackgroundColor(Color.GREEN);
-
-//        map.setBackground(gd);
-        
-        
-        
-        
+        mapview.setBackgroundColor(Color.GREEN);
 		position = new PositioningView(this);
 		position.setVisibility(switchmap);
-		
         pathview = new PathView(this);
-//        endNode = 10;
-//        startNode = 0;
-//        pathview.setPath(floormap.getShottestPath(1,startNode,endNode));
         pathview.setVisibility(switchmap);
-        floormap = new FloorMap(pathview,position);
         
         
-        map.setOnClickListener(new Button.OnClickListener(){
+        try {
+			JSONObject json_obj = new JSONObject(loadJSONFromAsset("json/data.json"));
+			
+			
+			floormap = new FloorMap(pathview,position,mapview,json_obj);
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        
+        mapbutton.setOnClickListener(new Button.OnClickListener(){
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				
-				switchmap = switchmap*-1;
-				
-				floor.setVisibility(switchmap);		
-				position.setVisibility(switchmap);
-				pathview.setVisibility(switchmap);
+				if(mapview.isVisible()){
+					mapview.hide();
+					position.hide();
+					pathview.hide();
+				}else{
+					mapview.show();
+					position.show();
+					pathview.show();
+				}
 			}
         });
         
         
-        getFrame().addView(map,mapParams);
+        getFrame().addView(mapbutton,mapParams);
         getFrame().addView(line,lineParams);
 //        getFrame().addView(input);
-        getFrame().addView(floor,floorParams);
+        getFrame().addView(mapview,floorParams);
         getFrame().addView(position,floorParams);
         getFrame().addView(pathview,floorParams);
         
@@ -225,9 +232,23 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
 	}
 	
-	public void setEndNode(int endNode){
-		
-	}
+	public String loadJSONFromAsset(String path) {
+        String json = null;
+        try {
+            InputStream is = getAssets().open(path);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
+    }
 
 
 	/**

@@ -22,18 +22,20 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int floor1=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int image=0x7f020003;
-        public static final int screenshoticon=0x7f020004;
+        public static final int clear_btn=0x7f020000;
+        public static final int floor1=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int icon=0x7f020003;
+        public static final int image=0x7f020004;
+        public static final int screenshoticon=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f090006;
+        public static final int action_settings=0x7f090007;
+        public static final int autocomplete=0x7f090005;
+        public static final int clearBtn=0x7f090004;
         public static final int email_address=0x7f090001;
         public static final int floorButton=0x7f090002;
-        public static final int spinner=0x7f090004;
-        public static final int takepicture=0x7f090005;
+        public static final int takepicture=0x7f090006;
         public static final int test=0x7f090000;
         public static final int tvFragText=0x7f090003;
     }

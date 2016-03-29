@@ -17,7 +17,7 @@ public class PositioningView extends View{
 	int yScale = 25;
 	int x;
 	int y;
-	
+	int visible = -1;
 	
 	public PositioningView(Context context) {
 		super(context);
@@ -39,7 +39,7 @@ public class PositioningView extends View{
 //			canvas.drawLine(0, j, 550, j, paint);
 //		}
 		
-        canvas.drawLine(0, 0, 100, 0, paint);
+//        canvas.drawLine(0, 0, 100, 0, paint);
 		canvas.drawCircle(x*xScale+15, y*yScale+15, 15, paint);
 		
 		
@@ -52,6 +52,20 @@ public class PositioningView extends View{
 		this.x = x;
 		this.y = y;
 		
+	}
+	
+	public void show(){
+		visible = 1;
+		this.setVisibility(visible);
+	}
+	
+	public void hide(){
+		visible = -1;
+		this.setVisibility(visible);
+	}
+	
+	public boolean isVisible(){
+		return visible == 1;
 	}
 
 }
