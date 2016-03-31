@@ -1,5 +1,6 @@
 package com.example.finalproject.shottestpath;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,23 +38,38 @@ public class FloorMap {
 			floorEdges.add(new ArrayList<Edge>());
 		}
 		
-		
+		String name;
 		int floor,number,x,y;
-		boolean isMarker;
+		boolean isMarker,isRoom;
 		JSONArray json_array = json_obj.getJSONArray("data");
 		for(int i = 0;i<json_array.length();i++){
 			JSONObject j_inside = json_array.getJSONObject(i);
 			floor = j_inside.getInt("floor");
 			number = j_inside.getInt("number");
+			name = j_inside.getString("name");
 			x = j_inside.getInt("x");
 			y = j_inside.getInt("y");
-			if(j_inside.get("type").equals("marker")){
+			if(j_inside.getString("type").contains("marker")){
 				isMarker = true;
 			}else{
 				isMarker = false;
 			}
-			addVertex(floor,number, x, y,isMarker);
-		
+			if(j_inside.getString("type").contains("room")){
+				isRoom = true;
+			}else{
+				isRoom = false;
+			}
+			
+			try {
+				name = new String(name.getBytes("UTF-8"), "UTF-8");
+				Log.i("name", name);
+				addVertex(floor,name,number, x, y,isMarker,isRoom);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 		
 		
@@ -120,10 +136,11 @@ public class FloorMap {
 		    floorEdges.get(floorNum).add(lane);
 		  }
 		  
-		  private void addVertex(int floorNum,int i,int x,int y,boolean isMarker){
-		      Vertex location = new Vertex("Node_" + i, "Node_" + i,i,x,y,floorNum);
-		      location.setIsMarker(isMarker);
+		  private void addVertex(int floorNum,String name,int i,int x,int y,boolean isMarker,boolean isRoom){
+		      Vertex location = new Vertex("Node_" + i, name,i,x,y,floorNum,isMarker,isRoom);
 		      floorNodes.get(floorNum).add(location);
+		      
+		      
 		      
 		  }
 		  
@@ -166,10 +183,14 @@ public class FloorMap {
 			  position.setPosition(x, y);
 		  }
 		  
-		  public void drawPath(int floorNum , int start){
+		  public Vertex drawPath(int floorNum , int start){
 			  LinkedList<Vertex> linePath = getShottestPath(floorNum , start, endNode);
 			  pathview.setPath(linePath);
 			  Log.i("Linklist",linePath.toString());
+			  if(endNode == -1){
+				  return null;
+			  }
+			  return linePath.get(1);
 		  }
 		  
 		  

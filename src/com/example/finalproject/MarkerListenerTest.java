@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.example.finalproject.graphics.Model3D;
+import com.example.finalproject.shottestpath.Edge;
 import com.example.finalproject.shottestpath.FloorMap;
 import com.example.finalproject.shottestpath.Vertex;
 import com.example.finalproject.view.PathView;
@@ -30,8 +31,13 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 			if(model3d.isVisible()){
 					Log.i("PATTERN NAME : ",model3d.getPatternName()+" is Visible" + " NumberNode : "+node.getNumber()+" End Node = "+floormap.getEndNode());
 					floormap.currentPosition(node);
-					floormap.drawPath(node.getFloor(), node.getNumber());			
-				
+					Vertex nextNode = floormap.drawPath(node.getFloor(), node.getNumber());
+					if(nextNode != null){
+						Edge edge = floormap.findTheWay(node.getFloor(), node.getNumber(), nextNode.getNumber());
+						if(edge != null){
+							model3d.setYRotat(edge.getAngle());
+						}
+					}
 			}
 			
 		}

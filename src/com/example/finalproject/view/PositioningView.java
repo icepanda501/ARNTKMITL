@@ -13,8 +13,8 @@ import android.view.View;
 public class PositioningView extends View{
 	
 	Paint paint = new Paint();
-	int xScale = 25;
-	int yScale = 25;
+	int xScale = 11;
+	int yScale = 11;
 	int x;
 	int y;
 	int visible = -1;

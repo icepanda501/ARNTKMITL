@@ -140,6 +140,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		
 		MapView mapbutton = new MapView(this);
 		mapview = new FloorMapView(this);
+		mapview.setFloorNum(1);
 		mapview.hide();
 		
 		

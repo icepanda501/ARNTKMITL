@@ -13,8 +13,8 @@ import android.view.View;
 public class PathView extends View{
 	
 	Paint paint = new Paint();
-	int xScale = 25;
-	int yScale = 25;
+	int xScale = 11;
+	int yScale = 11;
 	int visible = -1;
 	LinkedList<Vertex> path;
 	

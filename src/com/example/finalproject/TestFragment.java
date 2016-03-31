@@ -1,11 +1,19 @@
 package com.example.finalproject;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.finalproject.shottestpath.FloorMap;
+import com.example.finalproject.shottestpath.Vertex;
+
+import edu.dhbw.andar.exceptions.AndARException;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,7 +38,7 @@ public class TestFragment extends Fragment {
 	private FloorMap floorMap;
 	private Button clear_btn;
 	private AutoCompleteTextView autocomplete;
-
+	List<Vertex> nodes;
     public static TestFragment newInstance(String text) {
 
         TestFragment f = new TestFragment();
@@ -50,7 +58,19 @@ public class TestFragment extends Fragment {
         autocomplete = (AutoCompleteTextView)v.findViewById(R.id.autocomplete);
         clear_btn = (Button)v.findViewById(R.id.clearBtn);
 //        SearchView search = (SearchView) v.findViewById(R.id.searchview);
-        final String[] items = new String[]{"-1","0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10","111","123412","123132"};
+        final ArrayList<String> items = new ArrayList<String>();
+        final ArrayList<Integer> index = new ArrayList<Integer>();
+        nodes = floorMap.getNodes(1);
+		for(Vertex node : nodes){
+			if(node.isRoom()){
+					items.add(node.getName());
+					index.add(nodes.indexOf(node));
+			}
+		}
+		Log.i("items","items : "+items.toString());
+		Log.i("index of item","index of item : "+index.toString());
+        
+        
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, items);
 //        dropdown.setAdapter(adapter);
         autocomplete.setAdapter(adapter);
@@ -61,7 +81,7 @@ public class TestFragment extends Fragment {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
     				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    				floorMap.setEndNode(Integer.parseInt(autocomplete.getText().toString()));
+    				floorMap.setEndNode(nodes.get(index.get(items.indexOf(autocomplete.getText()))).getNumber());
     		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
     		        return true;
                 }
@@ -76,7 +96,7 @@ public class TestFragment extends Fragment {
 				// TODO Auto-generated method stub
 				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-				floorMap.setEndNode(Integer.parseInt(adapter.getItem(position)));
+				floorMap.setEndNode(nodes.get(index.get(items.indexOf(listView.getItemAtPosition(position)))).getNumber());
 		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
 				
 			}

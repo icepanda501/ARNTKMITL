@@ -8,14 +8,17 @@ public class Vertex {
 	  final private int x;
 	  final private int y;
 	  final private int number;
+	  private boolean isRoom = false;
 	  private boolean isMarker = false;
-	  public Vertex(String id, String name,int number,int x,int y,int floorNum) {
+	  public Vertex(String id, String name,int number,int x,int y,int floorNum,boolean isMarker,boolean isRoom) {
 		    this.id = id;
 		    this.name = name;
 		    this.x = x;
 		    this.y = y;
 		    this.number = number;
 		    this.floorNum = floorNum;
+		    this.isMarker = isMarker;
+		    this.isRoom = isRoom;
 	  }
 	  
 	  public String getId() {
@@ -70,13 +73,15 @@ public class Vertex {
 		  public String toString() {
 		    return name;
 		  }
-		  
-		  public void setIsMarker(boolean isMarker){
-			  this.isMarker = isMarker;
-		  }
+
 		  
 		  public boolean isMarker(){
 			return isMarker;
+			  
+		  }
+		  
+		  public boolean isRoom(){
+			return isRoom;
 			  
 		  }
 		  
