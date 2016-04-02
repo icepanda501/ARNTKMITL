@@ -16,6 +16,7 @@ public class PathView extends View{
 	int xScale = 11;
 	int yScale = 11;
 	int visible = -1;
+	int error_point = 0;
 	LinkedList<Vertex> path;
 	
 	public PathView(Context context) {
@@ -35,7 +36,7 @@ public class PathView extends View{
 		
 		if(path != null){
 		    for(int i=0;i<path.size()-1;i++){
-		    	canvas.drawLine(path.get(i).getX()*xScale+13, path.get(i).getY()*yScale+13, path.get(i+1).getX()*xScale+13, path.get(i+1).getY()*yScale+13, paint);
+		    	canvas.drawLine(path.get(i).getX()*xScale+error_point, path.get(i).getY()*yScale+error_point, path.get(i+1).getX()*xScale+error_point, path.get(i+1).getY()*yScale+error_point, paint);
 		    }	
 		}
 

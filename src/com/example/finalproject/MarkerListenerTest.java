@@ -31,7 +31,7 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 			if(model3d.isVisible()){
 					Log.i("PATTERN NAME : ",model3d.getPatternName()+" is Visible" + " NumberNode : "+node.getNumber()+" End Node = "+floormap.getEndNode());
 					floormap.currentPosition(node);
-					Vertex nextNode = floormap.drawPath(node.getFloor(), node.getNumber());
+					Vertex nextNode = floormap.drawPath(node);
 					if(nextNode != null){
 						Edge edge = floormap.findTheWay(node.getFloor(), node.getNumber(), nextNode.getNumber());
 						if(edge != null){

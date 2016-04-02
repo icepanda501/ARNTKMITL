@@ -14,6 +14,7 @@ import com.example.finalproject.view.FloorMapView;
 import com.example.finalproject.view.MapView;
 import com.example.finalproject.view.PathView;
 import com.example.finalproject.view.PositioningView;
+import com.example.finalproject.view.RightTriangle;
 
 import android.util.Log;
 import android.view.View;
@@ -24,15 +25,23 @@ public class FloorMap {
 	private ArrayList<ArrayList<Edge>> floorEdges = new ArrayList<ArrayList<Edge>>();
 	private ArrayList<ArrayList<Vertex>> floorNodes = new ArrayList<ArrayList<Vertex>>();
 	private Vertex currentNode;
-	private int endNode = -1;
+	private Vertex endNode;
 	private PathView pathview;
 	private PositioningView position;
 	private FloorMapView mapview;
-	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,JSONObject json_obj) throws JSONException{
+	private int currentFloor;
+	private int endFloor;
+	private RightTriangle leftTriangle;
+	private RightTriangle rightTriangle;
+	private LinkedList<Vertex> path;
+	private LinkedList<Vertex> otherPath;
+	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, JSONObject json_obj) throws JSONException{
 		
 		this.pathview = pathview;
 		this.position = position;
 		this.mapview = mapview;
+		this.leftTriangle = leftTriangle;
+		this.rightTriangle = rightTriangle;
 		for(int i=1;i<=5;i++){
 			floorNodes.add(new ArrayList<Vertex>());
 			floorEdges.add(new ArrayList<Edge>());
@@ -97,9 +106,10 @@ public class FloorMap {
 		
 		
 	}
-	  public LinkedList<Vertex> getShottestPath(int floorNum , int start,int des) {
+		public LinkedList<Vertex> getShottestPath(int floorNum , int start,int des) {
 
 		    // Lets check from location Loc_1 to Loc_10
+		  		  	
 		    Graph graph = new Graph(floorNodes.get(floorNum), floorEdges.get(floorNum));
 		    DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
 		    dijkstra.execute(floorNodes.get(floorNum).get(start));
@@ -129,6 +139,29 @@ public class FloorMap {
 		    
 
 		  }
+	  
+	  	  ////////////////GET PATH TO DRAW ////////////////////////////////
+	  	  public LinkedList<Vertex> getPath(Vertex currentNode,Vertex endNode){
+	  		int current_floor = currentNode.getFloor();
+	  		int start = currentNode.getNumber();
+	  		int end_floor;
+	  		int des;
+	  		if(endNode != null){
+	  			end_floor = endNode.getFloor();
+		  		des = endNode.getNumber();
+	  		}else{
+	  			des = -1;
+	  			end_floor = current_floor;
+	  		}
+	  		
+	  		
+	  		if(current_floor != end_floor){
+	  			path = getShottestPath(current_floor, start, 5);
+	  		}else{
+	  			path = getShottestPath(current_floor, start, des);
+	  		}
+			return path;
+	  	  }
 
 		  private void addLane(String laneId,int floorNum, int sourceLocNo, int destLocNo,
 		      int duration , int angle) {
@@ -149,17 +182,17 @@ public class FloorMap {
 		  }
 		  
 
-		  public void setEndNode(int endNode){
+		  public void setEndNode(Vertex endNode){
 			  this.endNode = endNode;
 			  if(currentNode != null){
-				  drawPath(currentNode.getFloor(),currentNode.getNumber());
-			  }else if(endNode != -1){
+				  drawPath(currentNode);
+			  }else if(endNode != null){
 				  mapview.show();
 				  
 			  }
 		  }
 
-		  public int getEndNode(){
+		  public Vertex getEndNode(){
 			  return endNode;
 		  }
 		  
@@ -169,12 +202,18 @@ public class FloorMap {
 		  
 		  public void currentPosition(Vertex node){
 			  currentNode = node;
+			  setCurrentFloor(currentNode.getFloor());
 			  drawPosition(node.getX(),node.getY());
+		  }
+		  
+		  public void setCurrentFloor(int floor){
+			  this.currentFloor = floor;
+			  mapview.setFloorNum(currentFloor);
 		  }
 		  
 		  public void clear(){
 			  currentNode = null;
-			  endNode = -1;
+			  endNode = null;
 			  pathview.setPath(new LinkedList<Vertex>());
 			  position.setPosition(-1, -1);
 		  }
@@ -183,11 +222,11 @@ public class FloorMap {
 			  position.setPosition(x, y);
 		  }
 		  
-		  public Vertex drawPath(int floorNum , int start){
-			  LinkedList<Vertex> linePath = getShottestPath(floorNum , start, endNode);
+		  public Vertex drawPath(Vertex Node){
+			  LinkedList<Vertex> linePath = getPath(Node, endNode);
 			  pathview.setPath(linePath);
 			  Log.i("Linklist",linePath.toString());
-			  if(endNode == -1){
+			  if(endNode == null){
 				  return null;
 			  }
 			  return linePath.get(1);
@@ -206,7 +245,48 @@ public class FloorMap {
 			  
 		  }
 		  
+		  public void showMap(){
+				mapview.show();
+				if(currentNode != null){
+					position.show();
+					if(endNode != null){
+						if(currentNode.getFloor() != endNode.getFloor()){
+							leftTriangle.show();
+							rightTriangle.show();							
+						}
+					}
+				}
+				pathview.show();
+				
+		  }
+		  public void hideMap(){
+				mapview.hide();
+				position.hide();
+				pathview.hide();
+				leftTriangle.hide();
+				rightTriangle.hide();
+		  }		  
 
+		  public void rightMap(){
+			  mapview.hide();
+			  position.hide();
+			  pathview.hide();
+			  mapview.setFloorNum(endNode.getFloor());
+			  drawPath(floorNodes.get(1).get(2));
+			  mapview.show();
+			  pathview.show();
+		  }
 		  
+		  public void leftMap(){
+			  mapview.hide();
+			  position.hide();
+			  pathview.hide();
+			  mapview.setFloorNum(currentNode.getFloor());
+			  drawPath(currentNode);
+			  mapview.show();
+			  pathview.show();
+			  position.show();
+			  
+		  }
 
 }

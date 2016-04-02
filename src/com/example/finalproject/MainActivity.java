@@ -51,6 +51,7 @@ import com.example.finalproject.view.LineFocusCamera;
 import com.example.finalproject.view.MapView;
 import com.example.finalproject.view.PathView;
 import com.example.finalproject.view.PositioningView;
+import com.example.finalproject.view.RightTriangle;
 
 import edu.dhbw.andopenglcam.R;
 import android.app.ActionBar;
@@ -125,6 +126,8 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	private int switchmap = -1;
 	private FloorMap floormap;
 	private FloorMapView mapview;
+	private RightTriangle rightTriangle;
+	private RightTriangle leftTriangle;
 	public MainActivity() {
 		super(false);
 	}
@@ -142,17 +145,28 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		mapview = new FloorMapView(this);
 		mapview.setFloorNum(1);
 		mapview.hide();
-		
-		
-
-
-		
-     
-        FrameLayout.LayoutParams searchParams = new FrameLayout.LayoutParams(300,100);
-        searchParams.leftMargin = 400;
         FrameLayout.LayoutParams floorParams = new FrameLayout.LayoutParams(550,550);
         floorParams.leftMargin = 400;
         floorParams.topMargin = 150;
+        
+        
+		rightTriangle = new RightTriangle(this);
+		FrameLayout.LayoutParams rightTriangleParams = new FrameLayout.LayoutParams(100,100);
+		rightTriangleParams.leftMargin = 1000;
+		rightTriangleParams.topMargin = 350;
+		leftTriangle = new RightTriangle(this);
+		leftTriangle.setRotation(180);
+		FrameLayout.LayoutParams leftTriangleParams = new FrameLayout.LayoutParams(100,100);
+		leftTriangleParams.leftMargin = 250;
+		leftTriangleParams.topMargin = 350;
+		rightTriangle.setVisibility(switchmap);
+		leftTriangle.setVisibility(switchmap);
+		
+		
+        FrameLayout.LayoutParams searchParams = new FrameLayout.LayoutParams(300,100);
+        searchParams.leftMargin = 400;
+        
+        
         FrameLayout.LayoutParams mapParams = new FrameLayout.LayoutParams(300, 150);
         SearchView input = new SearchView(this);
         mapParams.leftMargin = 1000;
@@ -169,7 +183,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         FrameLayout.LayoutParams lineParams = new FrameLayout.LayoutParams(400, 300);
         lineParams.leftMargin = 450;
         lineParams.topMargin = 200;
-     
+        
         input.setBackgroundColor(0xFF00FFFF);
         mapview.setBackgroundColor(Color.GREEN);
 		position = new PositioningView(this);
@@ -182,7 +196,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 			JSONObject json_obj = new JSONObject(loadJSONFromAsset("json/data.json"));
 			
 			
-			floormap = new FloorMap(pathview,position,mapview,json_obj);
+			floormap = new FloorMap(pathview,position,mapview,leftTriangle,rightTriangle,json_obj);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -190,19 +204,35 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		}
         
         
+        leftTriangle.setOnClickListener(new Button.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				floormap.leftMap();
+				
+			}
+        	
+        });
+        
+        rightTriangle.setOnClickListener(new Button.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				floormap.rightMap();
+				
+			}
+        	
+        });
         
         mapbutton.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				
 				if(mapview.isVisible()){
-					mapview.hide();
-					position.hide();
-					pathview.hide();
+					
+					floormap.hideMap();
 				}else{
-					mapview.show();
-					position.show();
-					pathview.show();
+					floormap.showMap();
 				}
 			}
         });
@@ -214,6 +244,8 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         getFrame().addView(mapview,floorParams);
         getFrame().addView(position,floorParams);
         getFrame().addView(pathview,floorParams);
+        getFrame().addView(rightTriangle,rightTriangleParams);
+        getFrame().addView(leftTriangle,leftTriangleParams);
         
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.HORIZONTAL);
@@ -435,23 +467,27 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 								Log.i("FILENAME",""+filename);
 							}
 							
-							List<Vertex> nodes = floormap.getNodes(1);
+							///////////////////ADD NODE to MARKER/////////////////////////////////
 							int index = 0;
-							for(Vertex node : nodes){
-								if(node.isMarker()){
-									objModel3d.get(index).setNode(node);
-			    					try {
-										artoolkitForFloor1.registerARObject(objModel3d.get(index));
-									} catch (AndARException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+							for(int i=1;i<=2;i++){
+								List<Vertex> nodes = floormap.getNodes(i);
+								for(Vertex node : nodes){
+									if(node.isMarker()){
+										objModel3d.get(index).setNode(node);
+				    					try {
+											artoolkitForFloor1.registerARObject(objModel3d.get(index));
+										} catch (AndARException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+				    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap));
+				    					artoolkitForFloor1.addVisibilityListener(markerListenners.get(index));
+										index++;
 									}
-			    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap));
-			    					artoolkitForFloor1.addVisibilityListener(markerListenners.get(index));
-									index++;
 								}
+								
 							}
-							
+							/////////////////////////////////////////////////////////////////////////
 							
 							
 							

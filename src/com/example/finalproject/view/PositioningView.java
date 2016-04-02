@@ -18,7 +18,7 @@ public class PositioningView extends View{
 	int x;
 	int y;
 	int visible = -1;
-	
+	int error_point = 0;
 	public PositioningView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -34,13 +34,13 @@ public class PositioningView extends View{
 		
 //		for(int i=0; i<=550;i=i+25){
 //			canvas.drawLine(i, 0, i, 550, paint);
-//		}
+//		} 
 //		for(int j=0; j<=550;j=j+25){
 //			canvas.drawLine(0, j, 550, j, paint);
 //		}
 		
 //        canvas.drawLine(0, 0, 100, 0, paint);
-		canvas.drawCircle(x*xScale+15, y*yScale+15, 15, paint);
+		canvas.drawCircle(x*xScale+error_point, y*yScale+error_point, 15, paint);
 		
 		
 

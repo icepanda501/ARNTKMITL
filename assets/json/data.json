@@ -125,8 +125,103 @@
 			"floor":"1",
 			"link":[],
 			"type":"marker,room"	
-		}
-	
+		},
+				
+		{
+			"name":"209" ,
+			"number":"0",
+			"x":"20",
+			"y":"12",
+			"floor":"2",
+			"link":[{"number":"1",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"207" ,
+			"number":"1",
+			"x":"20",
+			"y":"24",
+			"floor":"2",
+			"link":[{"number":"2",
+					 "distance":"1",
+					 "angle":"90"},
+					 {"number":"4",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"ลิฟท์ชั้นสอง" ,
+			"number":"2",
+			"x":"20",
+			"y":"24",
+			"floor":"2",
+			"link":[{"number":"3",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"226" ,
+			"number":"3",
+			"x":"30",
+			"y":"24",
+			"floor":"2",
+			"link":[{"number":"5",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"205" ,
+			"number":"4",
+			"x":"20",
+			"y":"33",
+			"floor":"2",
+			"link":[{"number":"5",
+					 "distance":"1",
+					 "angle":"90"},
+					 {"number":"6",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"203" ,
+			"number":"5",
+			"x":"30",
+			"y":"33",
+			"floor":"2",
+			"link":[{"number":"6",
+					 "distance":"1",
+					 "angle":"90"},
+					 {"number":"7",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"6" ,
+			"number":"5",
+			"x":"20",
+			"y":"45",
+			"floor":"2",
+			"link":[{"number":"7",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room"
+		},
+		{
+			"name":"7" ,
+			"number":"5",
+			"x":"30",
+			"y":"45",
+			"floor":"2",
+			"link":[],
+			"type":"marker,room"
+		}	
 	
 	]
 }

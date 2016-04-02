@@ -38,7 +38,9 @@ public class TestFragment extends Fragment {
 	private FloorMap floorMap;
 	private Button clear_btn;
 	private AutoCompleteTextView autocomplete;
-	List<Vertex> nodes;
+	private List<Vertex> nodes;
+	private ArrayList<String> items;
+	private ArrayList<Integer> index;
     public static TestFragment newInstance(String text) {
 
         TestFragment f = new TestFragment();
@@ -58,17 +60,27 @@ public class TestFragment extends Fragment {
         autocomplete = (AutoCompleteTextView)v.findViewById(R.id.autocomplete);
         clear_btn = (Button)v.findViewById(R.id.clearBtn);
 //        SearchView search = (SearchView) v.findViewById(R.id.searchview);
-        final ArrayList<String> items = new ArrayList<String>();
-        final ArrayList<Integer> index = new ArrayList<Integer>();
-        nodes = floorMap.getNodes(1);
-		for(Vertex node : nodes){
-			if(node.isRoom()){
-					items.add(node.getName());
-					index.add(nodes.indexOf(node));
-			}
-		}
+        items = new ArrayList<String>();
+        index = new ArrayList<Integer>();
+        nodes = new ArrayList<Vertex>();
+        
+        ///////////////////////////// ADD NODE to AUTOCOMPLETE////////////////////////////////////
+        int indexBuffer = 0;
+        for(int i=1;i<=2;i++){
+        	ArrayList<Vertex> nodeBuffers = (ArrayList<Vertex>) floorMap.getNodes(i);
+    		for(Vertex node : nodeBuffers){
+    			if(node.isRoom()){
+    					nodes.add(node);
+    					items.add(node.getName());
+    					index.add(indexBuffer);
+    					indexBuffer++;
+    			}
+    		}
+        }
 		Log.i("items","items : "+items.toString());
 		Log.i("index of item","index of item : "+index.toString());
+		Log.i("Nodes","Nodes : "+nodes.toString());
+        //////////////////////////////////////////////////////////////////////////////////////////
         
         
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, items);
@@ -81,7 +93,7 @@ public class TestFragment extends Fragment {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
     				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    				floorMap.setEndNode(nodes.get(index.get(items.indexOf(autocomplete.getText()))).getNumber());
+    				floorMap.setEndNode(nodes.get(index.get(items.indexOf(autocomplete.getText()))));
     		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
     		        return true;
                 }
@@ -96,7 +108,7 @@ public class TestFragment extends Fragment {
 				// TODO Auto-generated method stub
 				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-				floorMap.setEndNode(nodes.get(index.get(items.indexOf(listView.getItemAtPosition(position)))).getNumber());
+				floorMap.setEndNode(nodes.get(index.get(items.indexOf(listView.getItemAtPosition(position)))));
 		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
 				
 			}
