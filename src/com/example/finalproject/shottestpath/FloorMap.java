@@ -156,7 +156,7 @@ public class FloorMap {
 	  		
 	  		
 	  		if(current_floor != end_floor){
-	  			path = getShottestPath(current_floor, start, 5);
+	  			path = getShottestPath(current_floor, start, 7);
 	  		}else{
 	  			path = getShottestPath(current_floor, start, des);
 	  		}
