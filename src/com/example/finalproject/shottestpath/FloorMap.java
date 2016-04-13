@@ -272,7 +272,7 @@ public class FloorMap {
 			  position.hide();
 			  pathview.hide();
 			  mapview.setFloorNum(endNode.getFloor());
-			  drawPath(floorNodes.get(1).get(2));
+			  drawPath(floorNodes.get(endNode.getFloor()).get(7));
 			  mapview.show();
 			  pathview.show();
 		  }
