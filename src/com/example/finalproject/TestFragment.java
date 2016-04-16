@@ -66,7 +66,7 @@ public class TestFragment extends Fragment {
         
         ///////////////////////////// ADD NODE to AUTOCOMPLETE////////////////////////////////////
         int indexBuffer = 0;
-        for(int i=1;i<=3;i++){
+        for(int i=1;i<=6;i++){
         	ArrayList<Vertex> nodeBuffers = (ArrayList<Vertex>) floorMap.getNodes(i);
     		for(Vertex node : nodeBuffers){
     			if(node.isRoom()){

@@ -469,7 +469,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 							
 							///////////////////ADD NODE to MARKER/////////////////////////////////
 							int index = 0;
-							for(int i=1;i<=3;i++){
+							for(int i=1;i<=6;i++){
 								List<Vertex> nodes = floormap.getNodes(i);
 								for(Vertex node : nodes){
 									if(node.isMarker()){

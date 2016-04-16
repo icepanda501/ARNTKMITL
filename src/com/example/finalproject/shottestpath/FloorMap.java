@@ -42,7 +42,7 @@ public class FloorMap {
 		this.mapview = mapview;
 		this.leftTriangle = leftTriangle;
 		this.rightTriangle = rightTriangle;
-		for(int i=1;i<=5;i++){
+		for(int i=1;i<=7;i++){
 			floorNodes.add(new ArrayList<Vertex>());
 			floorEdges.add(new ArrayList<Edge>());
 		}
@@ -117,6 +117,8 @@ public class FloorMap {
 		    if(des == -1){
 		    	return new LinkedList<Vertex>();
 		    }
+		    
+		    
 		    
 		    if(start != des){
 		    	LinkedList<Vertex> path = dijkstra.getPath(floorNodes.get(floorNum).get(des));
