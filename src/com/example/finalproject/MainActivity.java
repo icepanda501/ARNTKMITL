@@ -122,12 +122,13 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	private ProgressDialog waitDialog;
 	private Resources res;
 	private Button btest;
-	ARToolkit artoolkitForFloor1;
+	ARToolkit artoolkit;
 	private int switchmap = -1;
 	private FloorMap floormap;
 	private FloorMapView mapview;
 	private RightTriangle rightTriangle;
 	private RightTriangle leftTriangle;
+	private MapView mapbutton;
 	public MainActivity() {
 		super(false);
 	}
@@ -137,11 +138,11 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		super.onCreate(savedInstanceState);
 		super.setNonARRenderer(new LightingRenderer());//or might be omited
 		res=getResources();
-		artoolkitForFloor1 = getArtoolkit();		
+		artoolkit = getArtoolkit();		
 		getSurfaceView().setOnTouchListener(new TouchEventHandler());
 		getSurfaceView().getHolder().addCallback(this);
 		
-		MapView mapbutton = new MapView(this);
+		mapbutton = new MapView(this);
 		mapview = new FloorMapView(this);
 		mapview.setFloorNum(1);
 		mapview.hide();
@@ -236,6 +237,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 				}
 			}
         });
+        
         
         
         getFrame().addView(mapbutton,mapParams);
@@ -475,13 +477,13 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 									if(node.isMarker()){
 										objModel3d.get(index).setNode(node);
 				    					try {
-											artoolkitForFloor1.registerARObject(objModel3d.get(index));
+											artoolkit.registerARObject(objModel3d.get(index));
 										} catch (AndARException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
-				    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap));
-				    					artoolkitForFloor1.addVisibilityListener(markerListenners.get(index));
+				    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap,MainActivity.this));
+				    					artoolkit.addVisibilityListener(markerListenners.get(index));
 										index++;
 									}
 								}

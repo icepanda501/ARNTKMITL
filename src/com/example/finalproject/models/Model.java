@@ -32,9 +32,9 @@ import com.example.finalproject.util.BaseFileUtil;
 
 public class Model implements Serializable{
 	//position/rotation/scale
-	public float xrot = 90;
+	public float xrot = 0;
     public float yrot = 0;
-    public float zrot = 0;
+    public float zrot = 90;
     public float xpos = 0;
     public float ypos = 0;
     public float zpos = 0;

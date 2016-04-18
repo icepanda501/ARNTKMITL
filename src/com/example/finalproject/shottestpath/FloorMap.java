@@ -248,6 +248,7 @@ public class FloorMap {
 		  }
 		  
 		  public void showMap(){
+
 				mapview.show();
 				if(currentNode != null){
 					position.show();

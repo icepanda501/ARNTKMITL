@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="50dp" 
-    android:background="#08ae9e">
+    android:background="#6DC8C9">
 
     <Button
         android:id="@+id/floorButton"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:text="FLOOR X"
-        android:background="#08ae9e"
+        android:background="#6DC8C9"
         
         />
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="clear"
         android:layout_toLeftOf="@+id/autocomplete"
-        android:background="#C2185B" />
+        android:background="#559b9b" />
     
     <AutoCompleteTextView
 		android:id="@+id/autocomplete"

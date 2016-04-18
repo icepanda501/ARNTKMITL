@@ -1,8 +1,10 @@
 package com.example.finalproject.view;
 
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,15 +19,18 @@ public class FloorMapView extends View {
 	int mYpos = 10;
 	int visible = -1;
 	int floorNum;
+	
 	public FloorMapView(Context context) {
 		super(context);
+		
 		// TODO Auto-generated constructor stub
+		
 	}
 	
 	@SuppressLint("DrawAllocation") 
 	
 	protected void onDraw(Canvas canvas) {
-		
+
 		Bitmap map = BitmapFactory.decodeResource(getResources(), floorNum);
 		map = Bitmap.createScaledBitmap(map, 550, 550, true);
 		canvas.drawBitmap(map, 0, 0,paint);
@@ -62,7 +67,7 @@ public class FloorMapView extends View {
 	
 	public void show(){
 		visible = 1;
-		this.setVisibility(visible);
+		this.setVisibility(this.visible);
 	}
 	
 	public void hide(){

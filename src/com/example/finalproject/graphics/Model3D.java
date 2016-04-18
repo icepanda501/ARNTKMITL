@@ -58,7 +58,7 @@ public class Model3D extends ARObject implements Serializable{
 	private float zrot;
 	private Vertex node;
 	public Model3D(Model model , String patt) {
-		super("model", patt, 80.0, new double[]{0,0});
+		super("model", patt, 100.0, new double[]{0,0});
 		this.model = model;
 		this.xrot = model.xrot;
 		this.yrot = model.yrot;
@@ -123,6 +123,10 @@ public class Model3D extends ARObject implements Serializable{
 		zrot = angle;
 		
 	}
+	
+	public void setScale(float scale){
+		model.scale = scale;
+	}
 	@Override
 	public void draw(GL10 gl) {
 		super.draw(gl);
@@ -134,7 +138,6 @@ public class Model3D extends ARObject implements Serializable{
 		gl.glRotatef(xrot, 1, 0, 0);
 		gl.glRotatef(yrot, 0, 1, 0);
 		gl.glRotatef(zrot, 0, 0, 1);
-		
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
 		
@@ -181,6 +184,9 @@ public class Model3D extends ARObject implements Serializable{
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		
+		
+		
 	}
 	/**
 	 * write stuff to Android log
