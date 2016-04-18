@@ -32,8 +32,6 @@ import edu.dhbw.andar.pub.CustomRenderer;
 import com.example.finalproject.MainActivity;
 import com.example.finalproject.Config;
 import com.example.finalproject.MainActivity.ModelLoader;
-import com.example.finalproject.MainActivity.TakeAsyncScreenshot;
-import com.example.finalproject.MainActivity.TouchEventHandler;
 import com.example.finalproject.parser.ObjParser;
 import com.example.finalproject.parser.ParseException;
 import com.example.finalproject.parser.Util;
@@ -139,7 +137,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		super.setNonARRenderer(new LightingRenderer());//or might be omited
 		res=getResources();
 		artoolkit = getArtoolkit();		
-		getSurfaceView().setOnTouchListener(new TouchEventHandler());
+//		getSurfaceView().setOnTouchListener(new TouchEventHandler());
 		getSurfaceView().getHolder().addCallback(this);
 		
 		mapbutton = new MapView(this);
@@ -194,12 +192,21 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         
         try {
-			JSONObject json_obj = new JSONObject(loadJSONFromAsset("json/data.json"));
+        	ArrayList <JSONObject> list_json = new ArrayList<JSONObject>();
+
+			String [] filenames = getAssets().list("json");
+			for(String filename : filenames){
+				JSONObject json_obj2 = new JSONObject(loadJSONFromAsset("json/"+filename));
+				Log.i("JSON FILE","JSON FILE : "+filename);
+				list_json.add(json_obj2);
+			}
 			
-			
-			floormap = new FloorMap(pathview,position,mapview,leftTriangle,rightTriangle,json_obj);
+			floormap = new FloorMap(pathview,position,mapview,leftTriangle,rightTriangle,list_json);
 
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -327,9 +334,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	        case MENU_TRANSLATE:
 	        	mode = MENU_TRANSLATE;
 	            return true;
-	        case MENU_SCREENSHOT:
-	        	new TakeAsyncScreenshot().execute();
-	        	return true;
+
         }
         return false;
     }
@@ -349,65 +354,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
     }
     
 	
-    /**
-     * Handles touch events.
-     * @author Tobias Domhan
-     *
-     */
-    class TouchEventHandler implements OnTouchListener {
-    	
-    	private float lastX=0;
-    	private float lastY=0;
 
-		/* handles the touch events.
-		 * the object will either be scaled, translated or rotated, dependen on the
-		 * current user selected mode.
-		 * @see android.view.View.OnTouchListener#onTouch(android.view.View, android.view.MotionEvent)
-		 */
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			if(model!=null) {
-				switch(event.getAction()) {
-					//Action started
-					default:
-					case MotionEvent.ACTION_DOWN:
-						lastX = event.getX();
-						lastY = event.getY();
-						break;
-					//Action ongoing
-					case MotionEvent.ACTION_MOVE:
-						float dX = lastX - event.getX();
-						float dY = lastY - event.getY();
-						lastX = event.getX();
-						lastY = event.getY();
-						if(model != null) {
-							switch(mode) {
-								case MENU_SCALE:
-									model.setScale(dY/100.0f);
-						            break;
-						        case MENU_ROTATE:
-						        	model.setXrot(-1*dX);//dY-> Rotation um die X-Achse
-									model.setYrot(-1*dY);//dX-> Rotation um die Y-Achse
-						            break;
-						        case MENU_TRANSLATE:
-						        	model.setXpos(dY/10f);
-									model.setYpos(dX/10f);
-						        	break;
-							}		
-						}
-						break;
-					//Action ended
-					case MotionEvent.ACTION_CANCEL:	
-					case MotionEvent.ACTION_UP:
-						lastX = event.getX();
-						lastY = event.getY();
-						break;
-				}
-			}
-			return true;
-		}
-    	
-    }
     
 	public class ModelLoader extends AsyncTask<Void, Void, Void> {
 		      
@@ -510,50 +457,11 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
     		super.onPostExecute(result);
     		waitDialog.dismiss();
     		
-    		int is = 0;
-			if(objModel3d!=null)
-				for(Model3D objModel : objModel3d){
-//    					artoolkitForFloor1.registerARObject(objModel);
-//    					markerListenners.add(new MarkerListenerTest(objModel,position,pathview,floormap,startNode,endNode));
-//    					artoolkitForFloor1.addVisibilityListener(markerListenners.get(is));
-//    					Log.i("PATNAME",""+objModel.getPatternName()+" coordinate :"+objModel.getNode().getX()+","+objModel.getNode().getY());
-					is++;
-				}
+
 			startPreview();
     	}
     }
-	
-	class TakeAsyncScreenshot extends AsyncTask<Void, Void, Void> {
-		
-		private String errorMsg = null;
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			Bitmap bm = takeScreenshot();
-			FileOutputStream fos;
-			try {
-				fos = new FileOutputStream("/sdcard/AndARScreenshot"+new Date().getTime()+".png");
-				bm.compress(CompressFormat.PNG, 100, fos);
-				fos.flush();
-				fos.close();					
-			} catch (FileNotFoundException e) {
-				errorMsg = e.getMessage();
-				e.printStackTrace();
-			} catch (IOException e) {
-				errorMsg = e.getMessage();
-				e.printStackTrace();
-			}	
-			return null;
-		}
-		
-		protected void onPostExecute(Void result) {
-			if(errorMsg == null)
-				Toast.makeText(MainActivity.this, getResources().getText(R.string.screenshotsaved), Toast.LENGTH_SHORT ).show();
-			else
-				Toast.makeText(MainActivity.this, getResources().getText(R.string.screenshotfailed)+errorMsg, Toast.LENGTH_SHORT ).show();
-		};
-		
-	}
 	public class CustomBorderDrawable extends ShapeDrawable {
 	    private Paint fillpaint, strokepaint;
 	    private static final int WIDTH = 3; 

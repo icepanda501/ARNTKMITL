@@ -9,7 +9,8 @@
 			"link":[{"number":"1",
 					 "distance":"1",
 					 "angle":"30"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"180"
 		},
 		{
 			"name":"node1",

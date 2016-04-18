@@ -35,7 +35,7 @@ public class FloorMap {
 	private RightTriangle rightTriangle;
 	private LinkedList<Vertex> path;
 	private LinkedList<Vertex> otherPath;
-	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, JSONObject json_obj) throws JSONException{
+	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, ArrayList<JSONObject> list_json) throws JSONException{
 		
 		this.pathview = pathview;
 		this.position = position;
@@ -50,55 +50,64 @@ public class FloorMap {
 		String name;
 		int floor,number,x,y;
 		boolean isMarker,isRoom;
-		JSONArray json_array = json_obj.getJSONArray("data");
-		for(int i = 0;i<json_array.length();i++){
-			JSONObject j_inside = json_array.getJSONObject(i);
-			floor = j_inside.getInt("floor");
-			number = j_inside.getInt("number");
-			name = j_inside.getString("name");
-			x = j_inside.getInt("x");
-			y = j_inside.getInt("y");
-			if(j_inside.getString("type").contains("marker")){
-				isMarker = true;
-			}else{
-				isMarker = false;
-			}
-			if(j_inside.getString("type").contains("room")){
-				isRoom = true;
-			}else{
-				isRoom = false;
-			}
-			
-			try {
-				name = new String(name.getBytes("UTF-8"), "UTF-8");
-				Log.i("name", name);
-				addVertex(floor,name,number, x, y,isMarker,isRoom);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		}
 		
 		
-		for(int i = 0;i<json_array.length();i++){
-			JSONObject j_inside = json_array.getJSONObject(i);
-			int link_number,distance,angle;
-			number = j_inside.getInt("number");
-			floor = j_inside.getInt("floor");
-			JSONArray link = j_inside.getJSONArray("link");
-			for(int j=0;j<link.length();j++){
-				JSONObject link_inside = link.getJSONObject(j);
-				Log.i("Link JSON","Link JSON : "+link_inside.toString()+" "+number);
-				link_number = link_inside.getInt("number");
-				distance = link_inside.getInt("distance");
-				angle = link_inside.getInt("angle");			
-				addLane("EdgeGo"+link_number,floor,number,link_number,distance,angle);
-				addLane("EdgeBack"+link_number,floor,link_number,number,distance,angle);
+		for(JSONObject json :list_json){
+			
+			JSONArray json_array = json.getJSONArray("data");
+			for(int i = 0;i<json_array.length();i++){
+				JSONObject j_inside = json_array.getJSONObject(i);
+				floor = j_inside.getInt("floor");
+				number = j_inside.getInt("number");
+				name = j_inside.getString("name");
+				x = j_inside.getInt("x");
+				y = j_inside.getInt("y");
+				if(j_inside.getString("type").contains("marker")){
+					isMarker = true;
+				}else{
+					isMarker = false;
+				}
+				if(j_inside.getString("type").contains("room")){
+					isRoom = true;
+				}else{
+					isRoom = false;
+				}
+				
+				try {
+					name = new String(name.getBytes("UTF-8"), "UTF-8");
+					Log.i("name", name);
+					addVertex(floor,name,number, x, y,isMarker,isRoom);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				
 			}
+			
+			for(int i = 0;i<json_array.length();i++){
+				JSONObject j_inside = json_array.getJSONObject(i);
+				int link_number,distance,angle;
+				number = j_inside.getInt("number");
+				floor = j_inside.getInt("floor");
+				JSONArray link = j_inside.getJSONArray("link");
+				for(int j=0;j<link.length();j++){
+					JSONObject link_inside = link.getJSONObject(j);
+					Log.i("Link JSON","Link JSON : "+link_inside.toString()+" "+number);
+					link_number = link_inside.getInt("number");
+					distance = link_inside.getInt("distance");
+					angle = link_inside.getInt("angle");			
+					addLane("EdgeGo"+link_number,floor,number,link_number,distance,angle);
+					addLane("EdgeBack"+link_number,floor,link_number,number,distance,angle);
+					
+				}
+			}
+			
 		}
+		
+		
+		
+		
 		
 		
 	    

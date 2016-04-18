@@ -31,8 +31,7 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 	}
 
 	@Override
-	public void makerVisibilityChanged(boolean visible, int asd) {
-		Log.i("MARKER ID","ID MARKER  "+asd);
+	public void makerVisibilityChanged(boolean visible) {
 		if(visible){
 			if(model3d.isVisible()){
 					Log.i("PATTERN NAME : ",model3d.getPatternName()+" is Visible" + " NumberNode : "+node.getNumber()+" End Node = "+floormap.getEndNode());
@@ -50,7 +49,7 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 //						}
 						
 						Log.i("Angle between points", "angle : "+angle);
-						model3d.setYRotat((int) angle+90);
+						model3d.setYRotat((int) angle+0);
 						
 					}else{
 						model3d.setScale(0);

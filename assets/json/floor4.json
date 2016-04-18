@@ -1,0 +1,36 @@
+{
+	"data" : [
+		{
+			"name":"ลิฟท์ชั้นสี่" ,
+			"number":"0",
+			"x":"24",
+			"y":"23",
+			"floor":"4",
+			"link":[{"number":"1",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"marker,room",
+			"angle":"0"
+		},
+		{
+			"name":"node4-1" ,
+			"number":"1",
+			"x":"32",
+			"y":"23",
+			"floor":"4",
+			"link":[{"number":"2",
+					 "distance":"1",
+					 "angle":"90"}],
+			"type":"node"
+		},
+		{
+			"name":"common room" ,
+			"number":"2",
+			"x":"32",
+			"y":"21",
+			"floor":"4",
+			"link":[],
+			"type":"room"
+		}		
+	]
+}
