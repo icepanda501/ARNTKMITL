@@ -27,8 +27,6 @@ import com.example.finalproject.models.Model;
 import edu.dhbw.andar.ARToolkit;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
-import edu.dhbw.andar.pub.CustomObject;
-import edu.dhbw.andar.pub.CustomRenderer;
 import com.example.finalproject.MainActivity;
 import com.example.finalproject.Config;
 import com.example.finalproject.MainActivity.ModelLoader;
@@ -127,6 +125,8 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	private RightTriangle rightTriangle;
 	private RightTriangle leftTriangle;
 	private MapView mapbutton;
+	private TestFragment fragobj;
+	private SidebarFragment sidebar;
 	public MainActivity() {
 		super(false);
 	}
@@ -231,11 +231,11 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 			}
         	
         });
-        
+        fragobj= TestFragment.newInstance("");
+        sidebar = SidebarFragment.newInstance("");
         mapbutton.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				
 				if(mapview.isVisible()){
 					
 					floormap.hideMap();
@@ -258,13 +258,19 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.HORIZONTAL);
-
         ll.setId(12345);
 
-        TestFragment fragobj= TestFragment.newInstance("");
-        getFragmentManager().beginTransaction().add(ll.getId(), fragobj).commit();
-        fragobj.setFloorMap(floormap);
+        LinearLayout jj = new LinearLayout(this);
+        jj.setOrientation(LinearLayout.HORIZONTAL);
+        jj.setId(12345);
         
+        
+        getFragmentManager().beginTransaction().add(ll.getId(), fragobj).commit();
+        getFragmentManager().beginTransaction().add(jj.getId(), sidebar).hide(sidebar).commit();
+        
+        
+        fragobj.setFloorMap(floormap);
+
         getFrame().addView(ll);
 //        getFrame().addView(search,searchParams);
 

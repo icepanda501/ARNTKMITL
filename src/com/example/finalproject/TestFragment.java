@@ -1,22 +1,22 @@
 package com.example.finalproject;
 
-import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.finalproject.shottestpath.FloorMap;
 import com.example.finalproject.shottestpath.Vertex;
+import com.example.finalproject.view.FloorMapView;
 
-import edu.dhbw.andar.exceptions.AndARException;
+
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -26,47 +26,49 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.SearchView;
-import android.widget.Spinner;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class TestFragment extends Fragment {
 	
 	private FloorMap floorMap;
 	private Button clear_btn;
-	private Button floorText;
+	private ImageView floorText;
 	private AutoCompleteTextView autocomplete;
 	private List<Vertex> nodes;
 	private ArrayList<String> items;
 	private ArrayList<Integer> index;
+	private SidebarFragment sidebar;
+	private static TestFragment f;
+	
     public static TestFragment newInstance(String text) {
 
-        TestFragment f = new TestFragment();
+        f = new TestFragment();
         Bundle b = new Bundle();
         b.putString("text", text);
         f.setArguments(b);
         return f;
     }
     
+    
+    
    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v =  inflater.inflate(R.layout.fragment, container, false);
-        ((TextView) v.findViewById(R.id.tvFragText)).setText(getArguments().getString("text"));  
+        View v =  inflater.inflate(R.layout.fragment, container, false); 
         autocomplete = (AutoCompleteTextView)v.findViewById(R.id.autocomplete);
         clear_btn = (Button)v.findViewById(R.id.clearBtn);
-        floorText = (Button)v.findViewById(R.id.floorButton);
+        floorText = (ImageView)v.findViewById(R.id.floorButton);
 //        SearchView search = (SearchView) v.findViewById(R.id.searchview);
         items = new ArrayList<String>();
         index = new ArrayList<Integer>();
         nodes = new ArrayList<Vertex>();
-        
-        floorMap.setFloorText(floorText);
+        sidebar = SidebarFragment.getInstance();
+//        floorMap.setFloorText(floorText);
         
         ///////////////////////////// ADD NODE to AUTOCOMPLETE////////////////////////////////////
         int indexBuffer = 0;
@@ -105,6 +107,14 @@ public class TestFragment extends Fragment {
             }
         });
         
+        floorText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				getFragmentManager().beginTransaction().setCustomAnimations(R.anim.emter_from_left, R.anim.exit_to_right,0,0).show(sidebar).commit();
+				
+			}
+		});
         autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> listView, View v, int position,

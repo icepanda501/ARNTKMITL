@@ -1,20 +1,14 @@
 package com.example.finalproject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.example.finalproject.graphics.Model3D;
-import com.example.finalproject.shottestpath.Edge;
 import com.example.finalproject.shottestpath.FloorMap;
 import com.example.finalproject.shottestpath.Vertex;
-import com.example.finalproject.view.PathView;
-import com.example.finalproject.view.PositioningView;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 import edu.dhbw.andar.interfaces.MarkerVisibilityListener;
 
 public class MarkerListenerTest implements MarkerVisibilityListener{

@@ -306,8 +306,8 @@ public class FloorMap {
 			  
 		  }
 		  
-		  public void setFloorText(Button floorText){
-			  this.floorText = floorText;
-		  }
+//		  public void setFloorText(Button floorText){
+//			  this.floorText = floorText;
+//		  }
 
 }

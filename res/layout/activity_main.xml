@@ -12,5 +12,6 @@
     android:layout_height="wrap_content"
     android:hint="test"
     android:inputType="textEmailAddress" />
+    
 
 </LinearLayout>
