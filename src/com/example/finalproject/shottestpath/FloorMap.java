@@ -18,6 +18,7 @@ import com.example.finalproject.view.RightTriangle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 public class FloorMap {
 	private List<Vertex> nodes;
@@ -31,6 +32,7 @@ public class FloorMap {
 	private FloorMapView mapview;
 	private int currentFloor;
 	private int endFloor;
+	private Button floorText;
 	private RightTriangle leftTriangle;
 	private RightTriangle rightTriangle;
 	private LinkedList<Vertex> path;
@@ -48,7 +50,7 @@ public class FloorMap {
 		}
 		
 		String name;
-		int floor,number,x,y;
+		int floor,number,x,y,angleMark = 0;
 		boolean isMarker,isRoom;
 		
 		
@@ -72,11 +74,13 @@ public class FloorMap {
 				}else{
 					isRoom = false;
 				}
-				
+				if(j_inside.has("angle")){
+					angleMark = j_inside.getInt("angle");
+				}
 				try {
 					name = new String(name.getBytes("UTF-8"), "UTF-8");
 					Log.i("name", name);
-					addVertex(floor,name,number, x, y,isMarker,isRoom);
+					addVertex(floor,name,number, x, y,isMarker,isRoom,angleMark);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -180,12 +184,12 @@ public class FloorMap {
 		    floorEdges.get(floorNum).add(lane);
 		  }
 		  
-		  private void addVertex(int floorNum,String name,int i,int x,int y,boolean isMarker,boolean isRoom){
+		  private void addVertex(int floorNum,String name,int i,int x,int y,boolean isMarker,boolean isRoom, int angleMark){
 		      Vertex location = new Vertex("Node_" + i, name,i,x,y,floorNum,isMarker,isRoom);
-		      floorNodes.get(floorNum).add(location);
-		      
-		      
-		      
+		      if(isMarker){
+		    	  location.setAngle(angleMark);
+		      }
+		      floorNodes.get(floorNum).add(location);      
 		  }
 		  
 		  public List<Vertex> getNodes(int floorNum){
@@ -220,6 +224,7 @@ public class FloorMap {
 		  public void setCurrentFloor(int floor){
 			  this.currentFloor = floor;
 			  mapview.setFloorNum(currentFloor);
+			  floorText.setText("FLOOR "+floor);
 		  }
 		  
 		  public void clear(){
@@ -233,14 +238,14 @@ public class FloorMap {
 			  position.setPosition(x, y);
 		  }
 		  
-		  public Vertex drawPath(Vertex Node){
+		  public LinkedList<Vertex> drawPath(Vertex Node){
 			  LinkedList<Vertex> linePath = getPath(Node, endNode);
 			  pathview.setPath(linePath);
 			  Log.i("Linklist",linePath.toString());
 			  if(endNode == null){
 				  return null;
 			  }
-			  return linePath.get(1);
+			  return linePath;
 		  }
 		  
 		  
@@ -299,6 +304,10 @@ public class FloorMap {
 			  pathview.show();
 			  position.show();
 			  
+		  }
+		  
+		  public void setFloorText(Button floorText){
+			  this.floorText = floorText;
 		  }
 
 }

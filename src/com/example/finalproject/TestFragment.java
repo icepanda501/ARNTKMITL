@@ -37,6 +37,7 @@ public class TestFragment extends Fragment {
 	
 	private FloorMap floorMap;
 	private Button clear_btn;
+	private Button floorText;
 	private AutoCompleteTextView autocomplete;
 	private List<Vertex> nodes;
 	private ArrayList<String> items;
@@ -59,10 +60,13 @@ public class TestFragment extends Fragment {
         ((TextView) v.findViewById(R.id.tvFragText)).setText(getArguments().getString("text"));  
         autocomplete = (AutoCompleteTextView)v.findViewById(R.id.autocomplete);
         clear_btn = (Button)v.findViewById(R.id.clearBtn);
+        floorText = (Button)v.findViewById(R.id.floorButton);
 //        SearchView search = (SearchView) v.findViewById(R.id.searchview);
         items = new ArrayList<String>();
         index = new ArrayList<Integer>();
         nodes = new ArrayList<Vertex>();
+        
+        floorMap.setFloorText(floorText);
         
         ///////////////////////////// ADD NODE to AUTOCOMPLETE////////////////////////////////////
         int indexBuffer = 0;

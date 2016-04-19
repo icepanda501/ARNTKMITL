@@ -8,6 +8,7 @@ public class Vertex {
 	  final private int x;
 	  final private int y;
 	  final private int number;
+	  private int angle;
 	  private boolean isRoom = false;
 	  private boolean isMarker = false;
 	  public Vertex(String id, String name,int number,int x,int y,int floorNum,boolean isMarker,boolean isRoom) {
@@ -83,6 +84,14 @@ public class Vertex {
 		  public boolean isRoom(){
 			return isRoom;
 			  
+		  }
+		  
+		  public void setAngle(int angle){
+			  this.angle = angle;
+		  }
+		  
+		  public int getAngle(){
+			  return angle;
 		  }
 		  
 		 
