@@ -268,7 +268,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         getFragmentManager().beginTransaction().add(ll.getId(), fragobj).commit();
         getFragmentManager().beginTransaction().add(jj.getId(), sidebar).hide(sidebar).commit();
         
-        
+        sidebar.setFloorMap(floormap);
         fragobj.setFloorMap(floormap);
 
         getFrame().addView(ll);

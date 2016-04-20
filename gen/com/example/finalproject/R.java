@@ -40,22 +40,27 @@ public final class R {
         public static final int screenshoticon=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0008;
+        public static final int action_settings=0x7f0a000b;
         public static final int autocomplete=0x7f0a0003;
         public static final int clearBtn=0x7f0a0004;
         public static final int email_address=0x7f0a0001;
         public static final int floorButton=0x7f0a0002;
-        public static final int hamberger_in_sidebar=0x7f0a0006;
-        public static final int sidebar_header=0x7f0a0005;
-        public static final int takepicture=0x7f0a0007;
+        public static final int hamberger_in_sidebar=0x7f0a0008;
+        public static final int listView_sidebar=0x7f0a0009;
+        public static final int list_item_entry_title=0x7f0a0005;
+        public static final int list_item_section_text=0x7f0a0006;
+        public static final int sidebar_header=0x7f0a0007;
+        public static final int takepicture=0x7f0a000a;
         public static final int test=0x7f0a0000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int fragment=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int sidebar=0x7f030003;
-        public static final int test=0x7f030004;
+        public static final int list_item_enty=0x7f030002;
+        public static final int list_item_section=0x7f030003;
+        public static final int main=0x7f030004;
+        public static final int sidebar=0x7f030005;
+        public static final int test=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f090000;

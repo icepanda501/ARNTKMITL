@@ -12,11 +12,11 @@ public final class R {
 		public static final int screenshoticon = 0x7f02000b;
 	}
 	public static final class id {
-		public static final int takepicture = 0x7f0a0007;
+		public static final int takepicture = 0x7f0a000a;
 	}
 	public static final class layout {
-		public static final int main = 0x7f030002;
-		public static final int test = 0x7f030004;
+		public static final int main = 0x7f030004;
+		public static final int test = 0x7f030006;
 	}
 	public static final class string {
 		public static final int app_name = 0x7f060000;

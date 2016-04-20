@@ -202,6 +202,7 @@ public class FloorMap {
 			  if(currentNode != null){
 				  drawPath(currentNode);
 			  }else if(endNode != null){
+				  mapview.setFloorNum(endNode.getFloor());
 				  mapview.show();
 				  
 			  }
@@ -224,7 +225,7 @@ public class FloorMap {
 		  public void setCurrentFloor(int floor){
 			  this.currentFloor = floor;
 			  mapview.setFloorNum(currentFloor);
-			  floorText.setText("FLOOR "+floor);
+//			  floorText.setText("FLOOR "+floor);
 		  }
 		  
 		  public void clear(){
