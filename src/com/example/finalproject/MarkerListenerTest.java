@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.example.finalproject.graphics.Model3D;
@@ -9,6 +10,8 @@ import com.example.finalproject.shottestpath.Vertex;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import edu.dhbw.andar.ARToolkit;
+import edu.dhbw.andar.exceptions.AndARException;
 import edu.dhbw.andar.interfaces.MarkerVisibilityListener;
 
 public class MarkerListenerTest implements MarkerVisibilityListener{
@@ -18,17 +21,26 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 	private Vertex node;
 	private Context context;
 	private LinkedList<Vertex> nextNode;
-	public MarkerListenerTest(Model3D model3d,FloorMap floorMap,Context context){
+	private ARToolkit artoolkit;
+	public MarkerListenerTest(Model3D model3d,FloorMap floorMap,Context context, ARToolkit artoolkit){
 		this.model3d = model3d;
 		this.floormap = floorMap;
 		this.node = model3d.getNode();
 		this.context = context;
+		this.artoolkit = artoolkit;
 	}
 
 	@Override
 	public void makerVisibilityChanged(boolean visible) {
 		if(visible){
+			
+//			ArrayList<Model3D> models = ListModel.getInstance().getModels();
+			
 			if(model3d.isVisible()){
+				
+//					ArrayList<Model3D> models =  ListModel.getInstance().getModelsWithout(model3d);
+					
+					
 					Log.i("PATTERN NAME : ",model3d.getPatternName()+" is Visible" + " NumberNode : "+node.getNumber()+" End Node = "+floormap.getEndNode());
 					
 					
@@ -60,10 +72,22 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 							});
 						
 					}
+			}else{
+				Log.i("Out pap","Out la na 1" + model3d.getPatternName());
+//				artoolkit.unregisterARObject(model3d);
 			}
 			
 		}
-		
+//		else{
+//			try {
+//				Log.i("REGIS","Regis la naaaaa " + model3d.getPatternName());
+//				artoolkit.registerARObject(model3d);
+//			} catch (AndARException e) {
+//				// TODO Auto-generated catch block
+//				Log.e("HEY mun error","I sus kuy :"+model3d.getPatternName());
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 }

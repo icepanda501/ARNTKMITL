@@ -9,7 +9,7 @@ package edu.dhbw.andopenglcam;
 public final class R {
 	public static final class drawable {
 		public static final int icon = 0x7f020009;
-		public static final int screenshoticon = 0x7f02000b;
+		public static final int screenshoticon = 0x7f02000c;
 	}
 	public static final class id {
 		public static final int takepicture = 0x7f0a000a;

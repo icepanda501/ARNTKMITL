@@ -423,6 +423,11 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 							}
 							
 							///////////////////ADD NODE to MARKER/////////////////////////////////
+							
+							ListModel.newInstance(objModel3d);
+							
+							objModel3d = ListModel.getInstance().getModels();
+							
 							int index = 0;
 							for(int i=1;i<=6;i++){
 								List<Vertex> nodes = floormap.getNodes(i);
@@ -431,11 +436,13 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 										objModel3d.get(index).setNode(node);
 				    					try {
 											artoolkit.registerARObject(objModel3d.get(index));
+											
+//											artoolkit.unregisterARObject(arobject);
 										} catch (AndARException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
-				    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap,MainActivity.this));
+				    					markerListenners.add(new MarkerListenerTest(objModel3d.get(index),floormap,MainActivity.this,artoolkit));
 				    					artoolkit.addVisibilityListener(markerListenners.get(index));
 										index++;
 									}

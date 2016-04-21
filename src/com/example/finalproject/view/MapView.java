@@ -25,7 +25,7 @@ public class MapView extends View {
 	protected void onDraw(Canvas canvas) {
 		paint.setColor(Color.BLACK);
 		
-		Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.image);
+		Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.mapbutton);
 		canvas.drawBitmap(map, mXpos, mYpos,paint);
 
 	}

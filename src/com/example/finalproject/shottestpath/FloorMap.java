@@ -130,9 +130,6 @@ public class FloorMap {
 		    if(des == -1){
 		    	return new LinkedList<Vertex>();
 		    }
-		    
-		    
-		    
 		    if(start != des){
 		    	LinkedList<Vertex> path = dijkstra.getPath(floorNodes.get(floorNum).get(des));
 			    
@@ -148,8 +145,7 @@ public class FloorMap {
 			    return path;
 			    
 		    }else{
-		    	LinkedList<Vertex> path = new LinkedList<Vertex>();
-		    	return path;
+		    	return new LinkedList<Vertex>();
 		    }
 		    
 
@@ -171,7 +167,12 @@ public class FloorMap {
 	  		
 	  		
 	  		if(current_floor != end_floor){
-	  			path = getShottestPath(current_floor, start, 7);
+	  			if(current_floor == 4){
+	  				path = getShottestPath(current_floor, start, 0);
+	  			}else{
+	  				path = getShottestPath(current_floor, start, 7);
+	  			}
+	  			
 	  		}else{
 	  			path = getShottestPath(current_floor, start, des);
 	  		}
