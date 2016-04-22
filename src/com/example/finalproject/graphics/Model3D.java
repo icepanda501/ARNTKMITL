@@ -57,8 +57,9 @@ public class Model3D extends ARObject implements Serializable{
 	private float yrot;
 	private float zrot;
 	private Vertex node;
+	private boolean regis = false;
 	public Model3D(Model model , String patt) {
-		super("model", patt, 100.0, new double[]{0,0});
+		super("model", patt, 50.0, new double[]{0,0});
 		this.model = model;
 		this.xrot = model.xrot;
 		this.yrot = model.yrot;
@@ -127,6 +128,15 @@ public class Model3D extends ARObject implements Serializable{
 	public void setScale(float scale){
 		model.scale = scale;
 	}
+	
+	public void setRegis(boolean regis){
+		this.regis = regis;
+	}
+	
+	public boolean getRegis(){
+		return regis;
+	}
+	
 	@Override
 	public void draw(GL10 gl) {
 		super.draw(gl);
@@ -226,4 +236,6 @@ public class Model3D extends ARObject implements Serializable{
 	    
 	    
 	}
+	
+	
 }

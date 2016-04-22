@@ -37,10 +37,12 @@ public class FloorMap {
 	private RightTriangle rightTriangle;
 	private LinkedList<Vertex> path;
 	private LinkedList<Vertex> otherPath;
-	public FloorMap(PathView pathview,PositioningView position, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, ArrayList<JSONObject> list_json) throws JSONException{
+	private PositioningView goalPosition;
+	public FloorMap(PathView pathview,PositioningView position, PositioningView goalPosition, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, ArrayList<JSONObject> list_json) throws JSONException{
 		
 		this.pathview = pathview;
 		this.position = position;
+		this.goalPosition = goalPosition;
 		this.mapview = mapview;
 		this.leftTriangle = leftTriangle;
 		this.rightTriangle = rightTriangle;
@@ -200,11 +202,12 @@ public class FloorMap {
 
 		  public void setEndNode(Vertex endNode){
 			  this.endNode = endNode;
+			  goalPosition.setPosition(endNode.getX(), endNode.getY());
 			  if(currentNode != null){
 				  drawPath(currentNode);
 			  }else if(endNode != null){
 				  mapview.setFloorNum(endNode.getFloor());
-				  mapview.show();
+				  showMap();
 				  
 			  }
 		  }
@@ -240,6 +243,10 @@ public class FloorMap {
 			  position.setPosition(x, y);
 		  }
 		  
+		  public void drawGoalPosition(int x,int y){
+			  goalPosition.setPosition(x, y);
+		  }
+		  
 		  public LinkedList<Vertex> drawPath(Vertex Node){
 			  LinkedList<Vertex> linePath = getPath(Node, endNode);
 			  pathview.setPath(linePath);
@@ -264,47 +271,60 @@ public class FloorMap {
 		  }
 		  
 		  public void showMap(){
-
+			  	hideMap();
+			  	
 				mapview.show();
 				if(currentNode != null){
 					position.show();
 					if(endNode != null){
 						if(currentNode.getFloor() != endNode.getFloor()){
-							leftTriangle.show();
 							rightTriangle.show();							
+						}else{
+							goalPosition.show();
 						}
+					}
+				}else{
+					if(endNode != null){
+						goalPosition.show();
 					}
 				}
 				pathview.show();
 				
 		  }
 		  public void hideMap(){
-				mapview.hide();
-				position.hide();
-				pathview.hide();
 				leftTriangle.hide();
 				rightTriangle.hide();
+				mapview.hide();
+				position.hide();
+				goalPosition.hide();
+				pathview.hide();
 		  }		  
 
 		  public void rightMap(){
 			  mapview.hide();
 			  position.hide();
 			  pathview.hide();
+			  rightTriangle.hide();
 			  mapview.setFloorNum(endNode.getFloor());
 			  drawPath(floorNodes.get(endNode.getFloor()).get(7));
 			  mapview.show();
 			  pathview.show();
+			  goalPosition.show();
+			  leftTriangle.show();
 		  }
 		  
 		  public void leftMap(){
 			  mapview.hide();
 			  position.hide();
 			  pathview.hide();
+			  leftTriangle.hide();
+			  goalPosition.hide();
 			  mapview.setFloorNum(currentNode.getFloor());
 			  drawPath(currentNode);
 			  mapview.show();
 			  pathview.show();
 			  position.show();
+			  rightTriangle.show();
 			  
 		  }
 		  

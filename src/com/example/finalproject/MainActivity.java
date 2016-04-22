@@ -110,6 +110,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 	
 	private int mode = MENU_SCALE;
 	private PositioningView position;
+	private PositioningView goalPosition;
 	private PathView pathview;
 	
 	private ArrayList<Model3D> objModel3d = new ArrayList<Model3D>();
@@ -185,8 +186,10 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         input.setBackgroundColor(0xFF00FFFF);
         mapview.setBackgroundColor(Color.GREEN);
-		position = new PositioningView(this);
+		position = new PositioningView(this,Color.BLACK);
 		position.setVisibility(switchmap);
+		goalPosition = new PositioningView(this,Color.RED);
+		goalPosition.setVisibility(switchmap);
         pathview = new PathView(this);
         pathview.setVisibility(switchmap);
         
@@ -201,7 +204,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 				list_json.add(json_obj2);
 			}
 			
-			floormap = new FloorMap(pathview,position,mapview,leftTriangle,rightTriangle,list_json);
+			floormap = new FloorMap(pathview,position,goalPosition,mapview,leftTriangle,rightTriangle,list_json);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -255,6 +258,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         getFrame().addView(pathview,floorParams);
         getFrame().addView(rightTriangle,rightTriangleParams);
         getFrame().addView(leftTriangle,leftTriangleParams);
+        getFrame().addView(goalPosition,floorParams);
         
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.HORIZONTAL);
@@ -436,6 +440,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 										objModel3d.get(index).setNode(node);
 				    					try {
 											artoolkit.registerARObject(objModel3d.get(index));
+											objModel3d.get(index).setRegis(true);
 											
 //											artoolkit.unregisterARObject(arobject);
 										} catch (AndARException e) {

@@ -30,6 +30,7 @@
 	            android:orientation="vertical"
 	            android:background="#FFFFFF">
 			    <AutoCompleteTextView
+			        android:completionThreshold="1"
 					android:id="@+id/autocomplete"
 				    android:layout_width="fill_parent"
 				    android:layout_height="wrap_content"
@@ -42,13 +43,15 @@
   <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.15">
-	        	<Button
+        android:layout_weight="0.10">
+	        	<ImageView
 			        android:id="@+id/clearBtn"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="x"
-			        android:background="#559b9b" />
+			        android:layout_centerVertical="true"
+      				android:layout_centerHorizontal="true"
+			        android:src="@drawable/clearbtn"
+			        android:background="#6DC8C9" />
      </RelativeLayout>
 
 

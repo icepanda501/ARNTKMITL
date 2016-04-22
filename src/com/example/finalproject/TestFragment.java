@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class TestFragment extends Fragment {
 	
 	private FloorMap floorMap;
-	private Button clear_btn;
+	private ImageView clear_btn;
 	private ImageView floorText;
 	private AutoCompleteTextView autocomplete;
 	private List<Vertex> nodes;
@@ -61,7 +61,7 @@ public class TestFragment extends Fragment {
 
         View v =  inflater.inflate(R.layout.fragment, container, false); 
         autocomplete = (AutoCompleteTextView)v.findViewById(R.id.autocomplete);
-        clear_btn = (Button)v.findViewById(R.id.clearBtn);
+        clear_btn = (ImageView)v.findViewById(R.id.clearBtn);
         floorText = (ImageView)v.findViewById(R.id.floorButton);
 //        SearchView search = (SearchView) v.findViewById(R.id.searchview);
         items = new ArrayList<String>();

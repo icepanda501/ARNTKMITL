@@ -47,21 +47,32 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 					((Activity) context).runOnUiThread(new Runnable(){
 						   public void run(){
 							   floormap.currentPosition(node);
-						
+							   Log.i("X,Y : "," NumberNode : "+node.getNumber()+" X  "+node.getX() +" Y "+node.getY());
 						   }
 					});
 					nextNode = floormap.drawPath(node);
+					
 					if(nextNode != null){
+						
+						if(nextNode.isEmpty()){
+							model3d.setXRotat(-90);
+							model3d.setZRotat(0);
+						}else{
+							Log.i("LastNode","LastNode : "+nextNode.get(nextNode.size()-1));
+							Vertex LastNode = nextNode.get(nextNode.size()-1);
+							float angle = (float) Math.toDegrees(Math.atan2(LastNode.getX() - node.getX(), LastNode.getY() - node.getY()));
+							Log.i("Angle between points", "angle : "+angle);
+							model3d.setYRotat((int) angle+node.getAngle());
+						}
 						model3d.setScale(80f);
-						float angle = (float) Math.toDegrees(Math.atan2(floormap.getEndNode().getX() - node.getX(), floormap.getEndNode().getY() - node.getY()));
+						
 						
 //						Edge edge = floormap.findTheWay(node.getFloor(), node.getNumber(), nextNode.getNumber());
 //						if(edge != null){
 //							model3d.setYRotat(edge.getAngle());
 //						}
 						
-						Log.i("Angle between points", "angle : "+angle);
-						model3d.setYRotat((int) angle+node.getAngle());
+
 						
 					}else{
 						model3d.setScale(0);
@@ -73,21 +84,29 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 						
 					}
 			}else{
-				Log.i("Out pap","Out la na 1" + model3d.getPatternName());
-//				artoolkit.unregisterARObject(model3d);
+				if(model3d.getRegis()){
+					Log.i("Out pap","Out la na 1" + model3d.getPatternName());
+					artoolkit.unregisterARObject(model3d);
+					model3d.setRegis(false);
+				}
 			}
 			
 		}
-//		else{
-//			try {
-//				Log.i("REGIS","Regis la naaaaa " + model3d.getPatternName());
-//				artoolkit.registerARObject(model3d);
-//			} catch (AndARException e) {
-//				// TODO Auto-generated catch block
-//				Log.e("HEY mun error","I sus kuy :"+model3d.getPatternName());
-//				e.printStackTrace();
-//			}
-//		}
+		else{
+			try {
+				if(!model3d.getRegis()){
+					Log.i("REGIS","Regis la naaaaa " + model3d.getPatternName());
+					artoolkit.registerARObject(model3d);
+					model3d.setRegis(true);
+					
+				}
+				
+			} catch (AndARException e) {
+				// TODO Auto-generated catch block
+				Log.e("HEY mun error","I sus kuy :"+model3d.getPatternName());
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
