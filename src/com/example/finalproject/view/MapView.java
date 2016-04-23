@@ -27,8 +27,7 @@ public class MapView extends View {
 		
 		Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.mapbutton);
 		canvas.drawBitmap(map, mXpos, mYpos,paint);
-
 	}
 
-
+	
 }

@@ -40,7 +40,6 @@ import com.example.finalproject.shottestpath.Graph;
 import com.example.finalproject.shottestpath.Vertex;
 import com.example.finalproject.util.AssetsFileUtil;
 import com.example.finalproject.util.BaseFileUtil;
-import com.example.finalproject.util.SDCardFileUtil;
 import com.example.finalproject.view.CustomView;
 import com.example.finalproject.view.FloorMapView;
 import com.example.finalproject.view.LineFocusCamera;
@@ -146,7 +145,9 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		mapview.setFloorNum(1);
 		mapview.hide();
         FrameLayout.LayoutParams floorParams = new FrameLayout.LayoutParams(550,550);
-        floorParams.leftMargin = 400;
+//        floorParams.leftMargin = 700;
+//        floorParams.topMargin = 250;
+        floorParams.leftMargin = 450;
         floorParams.topMargin = 150;
         
         
@@ -162,15 +163,14 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 		rightTriangle.setVisibility(switchmap);
 		leftTriangle.setVisibility(switchmap);
 		
-		
-        FrameLayout.LayoutParams searchParams = new FrameLayout.LayoutParams(300,100);
-        searchParams.leftMargin = 400;
         
         
         FrameLayout.LayoutParams mapParams = new FrameLayout.LayoutParams(300, 150);
         SearchView input = new SearchView(this);
-        mapParams.leftMargin = 1000;
+        mapParams.leftMargin = 900;
         mapParams.topMargin = 550;
+//        mapParams.leftMargin = 1700;
+//        mapParams.topMargin = 85;
         FrameLayout.LayoutParams inputParams = new FrameLayout.LayoutParams(600,100);
         input.setLayoutParams(inputParams);
         inputParams.leftMargin = 700;
@@ -183,7 +183,8 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         FrameLayout.LayoutParams lineParams = new FrameLayout.LayoutParams(400, 300);
         lineParams.leftMargin = 450;
         lineParams.topMargin = 200;
-        
+//        lineParams.leftMargin = 800;
+//        lineParams.topMargin = 350;
         input.setBackgroundColor(0xFF00FFFF);
         mapview.setBackgroundColor(Color.GREEN);
 		position = new PositioningView(this,Color.BLACK);
@@ -251,6 +252,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         
         getFrame().addView(mapbutton,mapParams);
+        
         getFrame().addView(line,lineParams);
 //        getFrame().addView(input);
         getFrame().addView(mapview,floorParams);
@@ -265,6 +267,8 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         ll.setId(12345);
 
         LinearLayout jj = new LinearLayout(this);
+        LinearLayout.LayoutParams jjParams= new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
+        jj.setLayoutParams(jjParams);
         jj.setOrientation(LinearLayout.HORIZONTAL);
         jj.setId(12345);
         
@@ -383,12 +387,6 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 			BaseFileUtil fileUtil= null;
 			File modelFile=null;
 			switch(type) {
-			case TYPE_EXTERNAL:
-				fileUtil = new SDCardFileUtil();
-				modelFile =  new File(URI.create(modelFileName));
-				modelFileName = modelFile.getName();
-				fileUtil.setBaseFolder(modelFile.getParentFile().getAbsolutePath());
-				break;
 			case TYPE_INTERNAL:
 				fileUtil = new AssetsFileUtil(getResources().getAssets());
 				fileUtil.setBaseFolder("models/");
@@ -423,7 +421,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 							String [] filenames = getAssets().list("");
 							for(String filename : filenames){
 								objModel3d.add(new Model3D(model,filename));
-								Log.i("FILENAME",""+filename);
+								Log.i("FILENAME",""+"Marker : "+filename);
 							}
 							
 							///////////////////ADD NODE to MARKER/////////////////////////////////
@@ -439,10 +437,13 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 									if(node.isMarker()){
 										objModel3d.get(index).setNode(node);
 				    					try {
-											artoolkit.registerARObject(objModel3d.get(index));
-											objModel3d.get(index).setRegis(true);
+				    						if(i == 6){
+												artoolkit.registerARObject(objModel3d.get(index));
+												objModel3d.get(index).setRegis(true);
+				    						}
+//											artoolkit.registerARObject(objModel3d.get(index));
+//											objModel3d.get(index).setRegis(true);
 											
-//											artoolkit.unregisterARObject(arobject);
 										} catch (AndARException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
