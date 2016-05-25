@@ -38,7 +38,7 @@ public class Model implements Serializable{
     public float xpos = 0;
     public float ypos = 0;
     public float zpos = 0;
-    public float scale = 80f;
+    public float scale = 0f;
     public int STATE = STATE_DYNAMIC;
     public static final int STATE_DYNAMIC = 0;
     public static final int STATE_FINALIZED = 1;

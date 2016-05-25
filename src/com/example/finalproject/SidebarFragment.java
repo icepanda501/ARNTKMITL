@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ private static SidebarFragment s = null;
 private ImageView hamberger;
 private ListView listview;
 private FloorMap floorMap;
+private AutoCompleteTextView autocomplete;
 private ArrayList<Vertex> nodes_sidebar = new ArrayList<Vertex>();
 private ArrayList<Integer> index = new ArrayList<Integer>();
 private ArrayList<Item> items = new ArrayList<Item>();
@@ -90,6 +92,8 @@ private Context activity = this.getActivity();
     		     EntryItem item = (EntryItem) items.get(position);
     		     Log.i("Sidebar","You clicked "+ item.title +" position "+position);
     		     floorMap.setEndNode(nodes_sidebar.get(position));
+ 		        autocomplete.setText(item.title);
+ 		        autocomplete.dismissDropDown();
     		     getFragmentManager().beginTransaction().setCustomAnimations(R.anim.emter_from_left, R.anim.exit_to_right,0,0).hide(s).commit();
     		}
 		});
@@ -100,5 +104,9 @@ private Context activity = this.getActivity();
 	   
     public void setFloorMap(FloorMap floorMap){
     	this.floorMap = floorMap;
+    }
+    public void setAutocomplete(AutoCompleteTextView autocomplete){
+    	this.autocomplete = autocomplete;
+    	
     }
 }

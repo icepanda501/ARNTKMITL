@@ -37,7 +37,7 @@
 				    android:layout_height="wrap_content"
 				    android:ems="10" 
 				    android:imeOptions="flagNoExtractUi"
-				    android:hint="Where do you go?"
+				    android:hint="Where do you want to go?"
 				    />
 		    </LinearLayout>
     </RelativeLayout>

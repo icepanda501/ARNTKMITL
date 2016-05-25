@@ -35,7 +35,7 @@
 			"type":"room"
 		},
 		{
-			"name":"310" ,
+			"name":"310 ห้องเก็บพัสดุ" ,
 			"number":"3",
 			"x":"21",
 			"y":"14",
@@ -46,10 +46,11 @@
 					 {"number":"8",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"270"
 		},
 		{
-			"name":"335" ,
+			"name":"335 ห้องบรรยายเล็ก" ,
 			"number":"4",
 			"x":"29",
 			"y":"14",
@@ -57,7 +58,8 @@
 			"link":[{"number":"26",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"270"
 		},
 		{
 			"name":"node3-5" ,
@@ -71,7 +73,8 @@
 					 {"number":"6",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,node"
+			"type":"marker,node",
+			"angle":"90"
 		},
 		{
 			"name":"IT support",
@@ -93,10 +96,11 @@
 			"link":[{"number":"8",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"0"
 		},
 		{
-			"name":"308" ,
+			"name":"308 ห้องปฏิบัติการณ์คอมพิวเตอร์ใหญ่" ,
 			"number":"8",
 			"x":"21",
 			"y":"22",
@@ -104,10 +108,11 @@
 			"link":[{"number":"9",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"270"
 		},
 		{
-			"name":"306" ,
+			"name":"306 ห้องปฏิบัติการณ์คอมพิวเตอร์เล็ก" ,
 			"number":"9",
 			"x":"21",
 			"y":"32",
@@ -118,7 +123,7 @@
 			"type":"room"
 		},
 		{
-			"name":"304" ,
+			"name":"304 ห้องปฏิบัติการณ์คอมพิวเตอร์ใหญ่" ,
 			"number":"10",
 			"x":"21",
 			"y":"39",
@@ -126,7 +131,8 @@
 			"link":[{"number":"11",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"270"
 		},
 		{
 			"name":"320" ,
@@ -151,7 +157,7 @@
 			"type":"room"
 		},
 		{
-			"name":"330" ,
+			"name":"330 ห้องบรรยายเล็ก" ,
 			"number":"13",
 			"x":"29",
 			"y":"39",
@@ -162,10 +168,11 @@
 					 {"number":"14",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"90"
 		},
 		{
-			"name":"321" ,
+			"name":"322 ห้องศูนย์เครือข่ายคอมพิวเตอร์" ,
 			"number":"14",
 			"x":"29",
 			"y":"34",
@@ -179,7 +186,7 @@
 			"type":"room"
 		},
 		{
-			"name":"331" ,
+			"name":"331 ห้องบรรยายเล็ก" ,
 			"number":"15",
 			"x":"30",
 			"y":"34",
@@ -188,7 +195,7 @@
 			"type":"room"
 		},
 		{
-			"name":"323" ,
+			"name":"323 ห้องเจ้าหน้าที่สนับสนุน" ,
 			"number":"16",
 			"x":"29",
 			"y":"30",
@@ -202,7 +209,7 @@
 			"type":"room"
 		},
 		{
-			"name":"332" ,
+			"name":"332 ห้องบรรยายเล็ก" ,
 			"number":"17",
 			"x":"30",
 			"y":"30",
@@ -211,7 +218,7 @@
 			"type":"room"
 		},
 		{
-			"name":"324" ,
+			"name":"324 ห้องเก็บอุปกรณ์" ,
 			"number":"18",
 			"x":"29",
 			"y":"26",
@@ -225,7 +232,7 @@
 			"type":"room"
 		},
 		{
-			"name":"333" ,
+			"name":"333 ห้องบรรยายเล็ก" ,
 			"number":"19",
 			"x":"29",
 			"y":"26",
@@ -234,7 +241,7 @@
 			"type":"room"
 		},
 		{
-			"name":"334" ,
+			"name":"334 ห้องบรรยายเล็ก" ,
 			"number":"20",
 			"x":"30",
 			"y":"22",
@@ -243,7 +250,7 @@
 			"type":"room"
 		},
 		{
-			"name":"329" ,
+			"name":"329 ห้องบรรยายใหญ่" ,
 			"number":"21",
 			"x":"29",
 			"y":"45",
@@ -254,7 +261,8 @@
 					 {"number":"22",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,room"
+			"type":"marker,room",
+			"angle":"90"
 		},
 		{
 			"name":"ห้องน้ำชายชั้นสาม" ,
@@ -277,7 +285,8 @@
 					 {"number":"10",
 					 "distance":"1",
 					 "angle":"90"}],
-			"type":"marker,node"
+			"type":"marker,node",
+			"angle":"270"
 		},
 		{
 			"name":"ห้องน้ำหญิงชั้นสาม" ,
@@ -300,7 +309,7 @@
 			"type":"room"
 		},
 		{
-			"name":"328" ,
+			"name":"328 ห้องบรรยายกลาง" ,
 			"number":"26",
 			"x":"29",
 			"y":"18",

@@ -31,12 +31,9 @@ public class FloorMap {
 	private PositioningView position;
 	private FloorMapView mapview;
 	private int currentFloor;
-	private int endFloor;
-	private Button floorText;
 	private RightTriangle leftTriangle;
 	private RightTriangle rightTriangle;
 	private LinkedList<Vertex> path;
-	private LinkedList<Vertex> otherPath;
 	private PositioningView goalPosition;
 	public FloorMap(PathView pathview,PositioningView position, PositioningView goalPosition, FloorMapView mapview,RightTriangle leftTriangle, RightTriangle rightTriangle, ArrayList<JSONObject> list_json) throws JSONException{
 		
@@ -101,7 +98,8 @@ public class FloorMap {
 					JSONObject link_inside = link.getJSONObject(j);
 					Log.i("Link JSON","Link JSON : "+link_inside.toString()+" "+number);
 					link_number = link_inside.getInt("number");
-					distance = link_inside.getInt("distance");
+//					distance = link_inside.getInt("distance");
+					distance = (int) Math.sqrt(Math.pow(floorNodes.get(floor).get(number).getX() - floorNodes.get(floor).get(link_number).getX(),2) + Math.pow(floorNodes.get(floor).get(number).getY() - floorNodes.get(floor).get(link_number).getY(),2));
 					angle = link_inside.getInt("angle");			
 					addLane("EdgeGo"+link_number,floor,number,link_number,distance,angle);
 					addLane("EdgeBack"+link_number,floor,link_number,number,distance,angle);
@@ -207,7 +205,7 @@ public class FloorMap {
 				  drawPath(currentNode);
 			  }else if(endNode != null){
 				  mapview.setFloorNum(endNode.getFloor());
-				  showMap();
+//				  showMap();
 				  
 			  }
 		  }
@@ -250,7 +248,7 @@ public class FloorMap {
 		  public LinkedList<Vertex> drawPath(Vertex Node){
 			  LinkedList<Vertex> linePath = getPath(Node, endNode);
 			  pathview.setPath(linePath);
-			  Log.i("Linklist",linePath.toString());
+			  Log.i("Linklist","Path"+linePath.toString());
 			  if(endNode == null){
 				  return null;
 			  }
@@ -272,9 +270,9 @@ public class FloorMap {
 		  
 		  public void showMap(){
 			  	hideMap();
-			  	
 				mapview.show();
 				if(currentNode != null){
+					drawPath(currentNode);
 					position.show();
 					if(endNode != null){
 						if(currentNode.getFloor() != endNode.getFloor()){

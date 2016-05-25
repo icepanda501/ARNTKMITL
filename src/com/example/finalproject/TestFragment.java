@@ -10,10 +10,15 @@ import com.example.finalproject.view.FloorMapView;
 
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,11 +26,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +50,8 @@ public class TestFragment extends Fragment {
 	private ArrayList<Integer> index;
 	private SidebarFragment sidebar;
 	private static TestFragment f;
-	
+	private AlertDialog.Builder builder;
+	private Dialog dialog;
     public static TestFragment newInstance(String text) {
 
         f = new TestFragment();
@@ -88,10 +97,103 @@ public class TestFragment extends Fragment {
 		Log.i("Nodes","Nodes : "+nodes.toString());
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        
+
+		
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, items);
 //        dropdown.setAdapter(adapter);
         autocomplete.setAdapter(adapter);
+        SidebarFragment.getInstance().setAutocomplete(autocomplete);
+        
+		builder = new AlertDialog.Builder(this.getActivity());
+		builder.setTitle("Where do you want to go ?");
+
+		// Set up the input
+		final AutoCompleteTextView input = new AutoCompleteTextView(this.getActivity());
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		input.setAdapter(adapter);
+		builder.setView(input);
+//		dialog = builder.show();
+		input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		input.setThreshold(2);
+		input.setId(123456789);
+		input.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				if(arg0.length() >= 2){
+					input.setDropDownAnchor(input.getId());
+					InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(input.getWindowToken(), 0);				
+				}		
+			}
+			
+		});
+		input.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+    				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+//    			    Toast.makeText(TestFragment.this.getActivity(),  "index of item : "+items.indexOf(autocomplete.getText()+""),Toast.LENGTH_SHORT).show();
+    			    if(items.indexOf(input.getText()+"") == -1){
+    			    	Toast.makeText(TestFragment.this.getActivity(),  "Destination not found",Toast.LENGTH_SHORT).show();
+    			    	input.setText("");
+    			    }else{
+        				floorMap.setEndNode(nodes.get(index.get(items.indexOf(input.getText()+""))));
+        		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
+        		        input.dismissDropDown();
+    			    }
+
+    		        return true;
+                }
+				return false;
+			}
+		});
+		
+		input.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> listView, View v, int position,
+					long arg3) {
+				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+				floorMap.setEndNode(nodes.get(index.get(items.indexOf(listView.getItemAtPosition(position)))));
+		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
+		        autocomplete.setText(listView.getItemAtPosition(position).toString());
+		        autocomplete.dismissDropDown();
+		        dialog.cancel();
+			}
+		});
+		// Set up the buttons
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+
+		
         autocomplete.setOnKeyListener(new OnKeyListener() {
         	@Override
             public boolean onKey(View v, int actionId,
@@ -99,8 +201,16 @@ public class TestFragment extends Fragment {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
     				final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     			    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    				floorMap.setEndNode(nodes.get(index.get(items.indexOf(autocomplete.getText()))));
-    		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
+//    			    Toast.makeText(TestFragment.this.getActivity(),  "index of item : "+items.indexOf(autocomplete.getText()+""),Toast.LENGTH_SHORT).show();
+    			    if(items.indexOf(autocomplete.getText()+"") == -1){
+    			    	Toast.makeText(TestFragment.this.getActivity(),  "Destination not found",Toast.LENGTH_SHORT).show();
+    			    	autocomplete.setText("");
+    			    }else{
+        				floorMap.setEndNode(nodes.get(index.get(items.indexOf(autocomplete.getText()+""))));
+        		        Toast.makeText(TestFragment.this.getActivity(),  "Select : " + floorMap.getEndNode(),Toast.LENGTH_SHORT).show();
+        		        autocomplete.dismissDropDown();
+    			    }
+
     		        return true;
                 }
                 return false;

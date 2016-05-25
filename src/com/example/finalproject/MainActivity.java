@@ -75,6 +75,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 
@@ -147,7 +148,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         FrameLayout.LayoutParams floorParams = new FrameLayout.LayoutParams(550,550);
 //        floorParams.leftMargin = 700;
 //        floorParams.topMargin = 250;
-        floorParams.leftMargin = 450;
+        floorParams.leftMargin = 400;
         floorParams.topMargin = 150;
         
         
@@ -166,16 +167,10 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         
         FrameLayout.LayoutParams mapParams = new FrameLayout.LayoutParams(300, 150);
-        SearchView input = new SearchView(this);
-        mapParams.leftMargin = 900;
+        mapParams.leftMargin = 1000;
         mapParams.topMargin = 550;
 //        mapParams.leftMargin = 1700;
 //        mapParams.topMargin = 85;
-        FrameLayout.LayoutParams inputParams = new FrameLayout.LayoutParams(600,100);
-        input.setLayoutParams(inputParams);
-        inputParams.leftMargin = 700;
-        inputParams.topMargin = 0;
-        input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         float[] roundedCorner = new float[] { 5, 5, 5, 5, 5, 5, 5, 5 };
         CustomBorderDrawable gd = new CustomBorderDrawable(new RoundRectShape(roundedCorner, null, null));
         gd.setFillColour(0xFF00FFFF);
@@ -185,7 +180,6 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         lineParams.topMargin = 200;
 //        lineParams.leftMargin = 800;
 //        lineParams.topMargin = 350;
-        input.setBackgroundColor(0xFF00FFFF);
         mapview.setBackgroundColor(Color.GREEN);
 		position = new PositioningView(this,Color.BLACK);
 		position.setVisibility(switchmap);
@@ -275,11 +269,24 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
         
         getFragmentManager().beginTransaction().add(ll.getId(), fragobj).commit();
         getFragmentManager().beginTransaction().add(jj.getId(), sidebar).hide(sidebar).commit();
+
+        
+        
         
         sidebar.setFloorMap(floormap);
         fragobj.setFloorMap(floormap);
 
         getFrame().addView(ll);
+        getFrame().addView(jj);
+        
+        getFrame().setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				getFragmentManager().beginTransaction().setCustomAnimations(com.example.finalproject.R.anim.emter_from_left, com.example.finalproject.R.anim.exit_to_right,0,0).hide(sidebar).commit();
+				return false;
+			}
+		});
 //        getFrame().addView(search,searchParams);
 
         
@@ -420,8 +427,10 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 							
 							String [] filenames = getAssets().list("");
 							for(String filename : filenames){
-								objModel3d.add(new Model3D(model,filename));
-								Log.i("FILENAME",""+"Marker : "+filename);
+								if(filename.contains("pat")){
+									objModel3d.add(new Model3D(model,filename));
+									Log.i("FILENAME",""+"Marker : "+filename);									
+								}
 							}
 							
 							///////////////////ADD NODE to MARKER/////////////////////////////////
@@ -437,7 +446,7 @@ public class MainActivity extends AndARActivity implements SurfaceHolder.Callbac
 									if(node.isMarker()){
 										objModel3d.get(index).setNode(node);
 				    					try {
-				    						if(i == 6){
+				    						if(i <= 6){
 												artoolkit.registerARObject(objModel3d.get(index));
 												objModel3d.get(index).setRegis(true);
 				    						}

@@ -42,37 +42,69 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 					
 					Log.i("PATTERN NAME : ",model3d.getPatternName()+" is Visible" + " NumberNode : "+node.getNumber()+" End Node = "+floormap.getEndNode());
 					
-					 
-					((Activity) context).runOnUiThread(new Runnable(){
-						   @SuppressLint("ShowToast") public void run(){
-							   Toast.makeText(context, "Pattern : "+model3d.getPatternName(), Toast.LENGTH_SHORT).show();
-							   floormap.currentPosition(node);
-//							   Log.i("X,Y : "," NumberNode : "+node.getNumber()+" X  "+node.getX() +" Y "+node.getY());
-						   }
-					});
+					floormap.currentPosition(node);
+//					((Activity) context).runOnUiThread(new Runnable(){
+//						   @SuppressLint("ShowToast") public void run(){
+//							   Toast.makeText(context, "Pattern : "+model3d.getPatternName(), Toast.LENGTH_SHORT).show();
+////							   Log.i("X,Y : "," NumberNode : "+node.getNumber()+" X  "+node.getX() +" Y "+node.getY());
+//						   }
+//					});
 					nextNode = floormap.drawPath(node);
 					
 					if(nextNode != null){
 						
 						if(nextNode.isEmpty()){
-							model3d.setXRotat(-90);
-							model3d.setZRotat(0);
+							if(floormap.getEndNode().getFloor() > node.getFloor()){
+								model3d.setXRotat(-90);
+								model3d.setZRotat(0);
+							}
+							else{
+								model3d.setXRotat(90);
+								model3d.setZRotat(0);
+							}
 						}else{
-							Log.i("LastNode","LastNode : "+nextNode.get(nextNode.size()-1));
+							Vertex lastNode = null;
+							Log.i("LastNode","Path : "+nextNode.toString());
+							for(Vertex node : nextNode){
+								if(node.isMarker() && nextNode.get(0) != node){
+									lastNode = node;
+									Log.i("Is work","Last Node is "+node.getNumber());
+									break;
+								}
+							}	
+							if(lastNode == null){
+								lastNode = nextNode.get(nextNode.size()-1);
+							}
+							
 							Vertex LastNode = nextNode.get(nextNode.size()-1);
 							float angle = (float) Math.toDegrees(Math.atan2(LastNode.getX() - node.getX(), LastNode.getY() - node.getY()));
-//							Log.i("Angle between points", "angle : "+angle);
+							Log.i("Angle between points", "angle : "+angle +"and Node angle :"+node.getAngle());
+							
+							if((int)angle+node.getAngle() == 0 || (int)angle+node.getAngle() == 180){
+								model3d.setXRotat(35);
+								model3d.setZRotat(180);
+							}else{
+								model3d.setXRotat(0);
+								model3d.setZRotat(90);
+							}
+							
 							model3d.setYRotat((int) angle+node.getAngle());
 						}
-						model3d.setScale(80f);
-						
-						
-//						Edge edge = floormap.findTheWay(node.getFloor(), node.getNumber(), nextNode.getNumber());
-//						if(edge != null){
-//							model3d.setYRotat(edge.getAngle());
-//						}
-						
-
+						model3d.setScale(40f);
+						if(model3d.getNode().getNumber() == 7 && floormap.getEndNode().getFloor() != model3d.getNode().getFloor()){
+							((Activity) context).runOnUiThread(new Runnable(){
+								   public void run(){
+									   Toast.makeText(context,  "Please go to floor " + floormap.getEndNode().getFloor(),Toast.LENGTH_LONG).show();
+								   }
+							});
+						}else if(node == floormap.getEndNode()){
+							((Activity) context).runOnUiThread(new Runnable(){
+								   public void run(){
+									   Toast.makeText(context,  "finish",Toast.LENGTH_LONG).show();
+								   }
+							});							
+							
+						} 
 						
 					}else{
 						model3d.setScale(0);
@@ -83,16 +115,17 @@ public class MarkerListenerTest implements MarkerVisibilityListener{
 							});
 						
 					}
-			}else{
-				if(model3d.getRegis()){
-					Log.i("Out pap","Out la na 1" + model3d.getPatternName());
-//					artoolkit.unregisterARObject(model3d);
-					model3d.setRegis(false);
-				}
 			}
+//			else{
+//				if(model3d.getRegis()){
+//					Log.i("Out pap","Out la na 1" + model3d.getPatternName());
+////					artoolkit.unregisterARObject(model3d);
+//					model3d.setRegis(false);
+//				}
+//			}
 			
 		}
-		Log.i("Don't see","Don't see that comming "+model3d.getPatternName());
+//		Log.i("Don't see","Don't see that comming "+model3d.getPatternName());
 //		else{
 //			try {
 //				if(!model3d.getRegis()){
